@@ -1,0 +1,51 @@
+<ammo name="ArrowR2" class="Bullet">
+	<geometry>
+		<firstperson name="Objects/weapons/swords/ranger_arrow.cgf" />
+        <thirdperson name="Objects/weapons/swords/ranger_arrow.cgf" />
+	</geometry>
+	<flags>
+		<param name="serverspawn" value="1" />
+		<param name="predictspawn" value="1" />
+	</flags>
+	<physics type="particle">
+		<param name="mass" value="0.2" />
+		<param name="speed" value="20" />
+		<param name="radius" value="1" />
+		<param name="air_resistance" value="0.02" />
+		<param name="water_resistance" value="0.5" />
+		<param name="gravity" value="0, 0, -10" />
+		<param name="water_gravity" value="0, 0, -1" />
+		<param name="thrust" value="0" />
+		<param name="lift" value="0" />
+		<param name="min_bounce_speed" value="8" />
+		<param name="single_contact" value="0" />
+        <param name="max_logged_collisions" value="20" />
+		<param name="pierceability" value="9" />
+        <param name="traceable" value="1" />
+	</physics>
+	<explosion>
+		<param name="pressure" value="250" />
+		<param name="min_radius" value="1" />
+		<param name="max_radius" value="1" />
+		<param name="min_phys_radius" value="1" />
+		<param name="max_phys_radius" value="1" />
+		<param name="hole_size" value="0" />
+		<param name="terrain_hole_size" value="0" />
+		<param name="effect" value="weapon_fx.grenade.explosion_default" />
+		<param name="effect_scale" value="0" />
+		<param name="radialblurdist" value="1" />
+		<param name="type" value="rocket"/>
+	</explosion>
+	<params>
+		<param name="lifetime" value="0" />
+		<param name="showtime" value="0" />
+		<param name="aitype" value="rpg" />
+		<param name="cruise" value="0" />
+		<param name="controlled" value="0" />
+	</params>
+	<trail>
+        <param name="effectFP" 	 value="muzzleflash.LAM.grenade" />
+		<param name="effect" 		 value="muzzleflash.LAM.grenade" />
+		<param name="scale" value="1.0" />
+	</trail>
+</ammo>
