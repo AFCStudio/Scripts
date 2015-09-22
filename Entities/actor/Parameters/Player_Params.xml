@@ -81,31 +81,43 @@
 		<HighVaultOnto positionOffset="0.0, 1.7, 1.2" moveDuration="0.5" correctionDuration="0.05" ledgeType="Wide" isHighVault="1" exitVelocityY="6" keepOrientation="1" GAME="MP" />
 	</LedgeGrabbingParams>
  
-	<StealthKill attackAttemptRange="1.0" attackAttemptTime="0.5" attackAttemptSpeed="8.5">
+    <!-- AFC Edited -->
+	<StealthKill attackAttemptRange="1.0" attackAttemptTime="8.0" attackAttemptSpeed="8.5" attackAttemptKillDelay="2.0" >
 		<!--<Drone>
 			<Params impulseBone="Hull" impulseScale="1.0" maxDist="2.0" maxHeightDiff="0.75" angleRange="140" requiresCloak="1" cloakInterference="1" />
 		</Drone>-->
 		<Human>
-			<Params impulseBone="Bip01 Spine2" impulseScale="1.0"  maxDist="2.0" maxHeightDiff="0.75" angleRange="140" requiresCloak="1" cloakInterference="1" />
+			<Params impulseBone="spine.04" impulseScale="1.0"  maxDist="2.0" maxHeightDiff="0.75" angleRange="140" requiresCloak="1" cloakInterference="1" />
 			<Anims>
-				<Anim playerAnimation="stand_tac_stealthKill_human_1p_01" enemyAnimation="stand_tac_stealthKill_human_01" useKnife="1" />
-				<Anim playerAnimation="stand_tac_stealthKill_human_1p_03" enemyAnimation="stand_tac_stealthKill_human_03" useKnife="0" />
+				<!--<Anim playerAnimation="stand_tac_stealthKill_human_1p_01" enemyAnimation="stand_tac_stealthKill_human_01" useKnife="1" />
+				<Anim playerAnimation="stand_tac_stealthKill_human_1p_03" enemyAnimation="stand_tac_stealthKill_human_03" useKnife="0" />-->
+                
+                <Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="1" />
+				<Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="0" />
 			</Anims>
 		</Human>
 		<Player>
-			<Params impulseBone="Bip01 Spine2" impulseScale="1.0" maxDist="1.2" extendedMaxDist="3.6" maxHeightDiff="0.75" angleRange="120" requiresCloak="0" cloakInterference="1" />
+			<Params impulseBone="spine.04" impulseScale="1.0" maxDist="1.2" extendedMaxDist="3.6" maxHeightDiff="0.75" angleRange="120" requiresCloak="0" cloakInterference="1" />
 			<Anims>
-				<Anim playerAnimation="stand_tac_stealthKill_human_1p_02" enemyAnimation="stand_tac_stealthKill_human_02" useKnife="1" />
+				<!--<Anim playerAnimation="stand_tac_stealthKill_human_1p_02" enemyAnimation="stand_tac_stealthKill_human_02" useKnife="1" />
 				<Anim playerAnimation="stand_tac_stealthKill_human_1p_03" enemyAnimation="stand_tac_stealthKill_human_03" useKnife="0" />
-				<Anim playerAnimation="stand_tac_stealthKill_human_1p_04" enemyAnimation="stand_tac_stealthKill_human_04" useKnife="0" />
+				<Anim playerAnimation="stand_tac_stealthKill_human_1p_04" enemyAnimation="stand_tac_stealthKill_human_04" useKnife="0" />-->
+                
+                <Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="1" />
+				<Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="0" />
+				<Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="0" />
 			</Anims>
 		</Player>
 		<DummyPlayer>
-			<Params impulseBone="Bip01 Spine2" impulseScale="1.0" maxDist="1.2" extendedMaxDist="3.6" maxHeightDiff="0.75" angleRange="120" requiresCloak="0" cloakInterference="1" />
+			<Params impulseBone="spine.04" impulseScale="1.0" maxDist="1.2" extendedMaxDist="3.6" maxHeightDiff="0.75" angleRange="120" requiresCloak="0" cloakInterference="1" />
 			<Anims>
-				<Anim playerAnimation="stand_tac_stealthKill_human_1p_02" enemyAnimation="stand_tac_stealthKill_human_02" useKnife="1" />
+				<!--<Anim playerAnimation="stand_tac_stealthKill_human_1p_02" enemyAnimation="stand_tac_stealthKill_human_02" useKnife="1" />
 				<Anim playerAnimation="stand_tac_stealthKill_human_1p_03" enemyAnimation="stand_tac_stealthKill_human_03" useKnife="0" />
-				<Anim playerAnimation="stand_tac_stealthKill_human_1p_04" enemyAnimation="stand_tac_stealthKill_human_04" useKnife="0" />
+				<Anim playerAnimation="stand_tac_stealthKill_human_1p_04" enemyAnimation="stand_tac_stealthKill_human_04" useKnife="0" />-->
+                
+                <Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="1" />
+				<Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="0" />
+				<Anim playerAnimation="Stealth_Magic" enemyAnimation="Stealth_Death" useKnife="0" />
 			</Anims>
 		</DummyPlayer>
 	</StealthKill>
