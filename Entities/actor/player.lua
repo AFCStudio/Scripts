@@ -2,11 +2,13 @@ Script.ReloadScript( "SCRIPTS/Entities/actor/BasicActor.lua");
 
 Player = 
 {
-	AnimationGraph = "player.xml",
-	UpperBodyGraph = "",
-	ActionController = "Animations/Mannequin/ADB/playerControllerDefs.xml",
-	AnimDatabase3P = "Animations/Mannequin/ADB/playerAnims3P.adb",
-	AnimDatabase1P = "Animations/Mannequin/ADB/playerAnims1P.adb",
+	--AnimationGraph = "player.xml",
+	--UpperBodyGraph = "",
+	--ActionController = "Animations/Mannequin/ADB/playerControllerDefs.xml",
+	--AnimDatabase3P = "Animations/Mannequin/ADB/playerAnims3P.adb",
+	--AnimDatabase1P = "Animations/Mannequin/ADB/playerAnims1P.adb",
+    ActionController = "Animations/Mannequin/ADB/MagicianControllerDefs.xml",
+    AnimDatabase3P = "Animations/Mannequin/ADB/MagicianDataBase.adb",
 	SoundDatabase = "Animations/Mannequin/ADB/playerSounds.adb",
 
 	type = "Player",
@@ -46,9 +48,12 @@ Player =
 			sightrange = 50,
 		},
 
-		fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
-		shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
-		clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+		--fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+		--shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+		--clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+        fileModel = "Objects/Characters/AFC_Ottomans/Malkocoglu.cdf",
+        shadowFileModel = "Objects/Characters/AFC_Ottomans/Malkocoglu.cdf",
+        clientFileModel = "Objects/Characters/AFC_Ottomans/Malkocoglu.cdf",
 
 		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_PlayerSP.xml",
 	},
@@ -64,12 +69,12 @@ Player =
 		{
 			items =
 			{
-				{ name = "Zeus", equip = true },
+				{ name = "Sword", equip = true },
 			},
-			ammo =
-			{
-				{ name = "lightbullet", amount = 28},
-			},
+			--ammo =
+			--{
+				--{ name = "lightbullet", amount = 28},
+			--},
 		},
 
 		Damage =
@@ -84,7 +89,7 @@ Player =
 				maxSpeed = 4.0,
 				heightCollider = 1.25,
 				heightPivot = 0.0,
-				size = {x=0.41,y=0.41,z=0.3},
+				size = {x=0.3,y=0.3,z=0.3},
 				viewOffset = {x=0,y=0.065,z=1.65},
 				weaponOffset = {x=0.2,y=0.0,z=1.35},
 				viewDownYMod = 0.05,
@@ -96,13 +101,28 @@ Player =
 			{
 				stanceId = -2, -- -2 is a magic number that gets ignored by CActor::SetupStance
 			},
+            
+            -- AFC Stand Walk
+            {
+                stanceId = STANCE_WALK,
+                maxSpeed = 1,
+                heightCollider = 1.25,
+				heightPivot = 0.0,
+				size = {x=0.3,y=0.3,z=0.3},
+				viewOffset = {x=0,y=0.065,z=1.25},
+				weaponOffset = {x=0.2,y=0.0,z=1.35},
+				viewDownYMod = 0.05,
+				modelOffset = {x=0,y=0,z=0.0},
+				name = "walk",
+				useCapsule = 1,
+            },
 
 			{
 				stanceId = STANCE_CROUCH,
 				maxSpeed = 1.5, -- See  Player:SetIsMultiplayer()  for MP value
 				heightCollider = 0.7,
 				heightPivot = 0,
-				size = {x=0.41,y=0.41,z=0.1},
+				size = {x=0.3,y=0.3,z=0.1},
 				viewOffset = {x=0,y=0.065,z=1.0},
 				weaponOffset = {x=0.2,y=0.0,z=0.85},
 				viewDownYMod = 0.05,
@@ -116,7 +136,7 @@ Player =
 				maxSpeed = 2.1,
 				heightCollider = 1.0,
 				heightPivot = 0,
-				size = {x=0.41,y=0.41,z=0.35},
+				size = {x=0.3,y=0.3,z=0.35},
 				viewOffset = {x=0,y=0.1,z=1.5},
 				modelOffset = {x=0,y=0,z=0.0},
 				weaponOffset = {x=0.3,y=0.0,z=0},
@@ -143,23 +163,23 @@ Player =
 
 		boneIDs =
 		{
-			BONE_BIP01 = "Bip01",
-			BONE_SPINE = "Bip01 Spine1",
-			BONE_SPINE2 = "Bip01 Spine2",
-			BONE_SPINE3 = "Bip01 Spine3",
-			BONE_HEAD = "Bip01 Head",
-			BONE_EYE_R = "eye_right_bone",
-			BONE_EYE_L = "eye_left_bone",
-			BONE_WEAPON = "weapon_bone",
-			BONE_WEAPON2 = "Lweapon_bone",
-			BONE_FOOT_R = "Bip01 R Foot",
-			BONE_FOOT_L = "Bip01 L Foot",
-			BONE_ARM_R = "Bip01 R Forearm",
-			BONE_ARM_L = "Bip01 L Forearm",
-			BONE_CALF_R = "Bip01 R Calf",
-			BONE_CALF_L = "Bip01 L Calf",
-			BONE_CAMERA = "Bip01 Camera",
-			BONE_HUD = "Bip01 HUD",
+			BONE_BIP01 = "Root",
+			BONE_SPINE = "Spine.01",
+			BONE_SPINE2 = "Spine.02",
+			BONE_SPINE3 = "Spine.03",
+			BONE_HEAD = "Head",
+			BONE_EYE_R = "eye.R",
+			BONE_EYE_L = "eye.L",
+			BONE_WEAPON = "Weapon.R",
+			BONE_WEAPON2 = "Weapon.L",
+			BONE_FOOT_R = "Foot.R",
+			BONE_FOOT_L = "Foot.L",
+			BONE_ARM_R = "forearm.R",
+			BONE_ARM_L = "forearm.L",
+			BONE_CALF_R = "shin.R",
+			BONE_CALF_L = "shin.L",
+			BONE_CAMERA = "Camera",
+			BONE_HUD = "HUD",
 		},
 
 		characterDBAs =
@@ -194,7 +214,7 @@ Player =
 -- Function called from C++ to set up multiplayer parameters
 function Player:SetIsMultiplayer()
 
-	self.Properties.Damage.health = 100;
+	self.Properties.Damage.health = 1000;
 	self.Properties.fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf";
 	self.Properties.shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf";
 	self.Properties.clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf";
