@@ -77,7 +77,7 @@ BasicActor =
 
 		useIKRotation = 0,
 	},
-
+    -- AFC IK Investigation
 	IKLimbs =
 	{
 		{0,"rightArm","Bip01 R UpperArm","Bip01 R Forearm","Bip01 R Hand", IKLIMB_RIGHTHAND},
@@ -391,7 +391,7 @@ function BasicActor:GetBloodFlowPosition()
 end
 
 function BasicActor:GetBloodFlowBone()
-	return "Bip01 Spine2";
+	return "spine.04";      -- AFC Code Edited
 end
 
 function BasicActor:WallBloodSplat(hit, killingHit)
