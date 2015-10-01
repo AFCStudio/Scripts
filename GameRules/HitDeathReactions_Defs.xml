@@ -47,20 +47,20 @@
 	<!ENTITY EAllowedParts "
  		<Enum>
 			<!-- sg1_preset.chr, shotgunner_red.cdf physic bones -->
-			<Value>Bip01 Head</Value>
-			<Value>Bip01 Spine1</Value>
-			<Value>Bip01 Spine</Value>
-			<Value>Bip01 Pelvis</Value>
-			<Value>Bip01 L UpperArm</Value>
-			<Value>Bip01 R UpperArm</Value>
-			<Value>Bip01 L ForeArm</Value>
-			<Value>Bip01 R ForeArm</Value>
-			<Value>Bip01 L Thigh</Value>
-			<Value>Bip01 R Thigh</Value>
-			<Value>Bip01 L Calf</Value>
-			<Value>Bip01 R Calf</Value>				
-			<Value>Bip01 L Foot</Value>
-			<Value>Bip01 R Foot</Value>	
+			<Value>head</Value>
+			<Value>spine.02</Value>
+			<Value>spine.01</Value>
+			<Value>hips</Value>
+			<Value>upper_arm.L</Value>
+			<Value>upper_arm.R</Value>
+			<Value>forearm.L</Value>
+			<Value>forearm.R</Value>
+			<Value>thigh.L</Value>
+			<Value>thigh.R</Value>
+			<Value>shin.L</Value>
+			<Value>shin.R</Value>				
+			<Value>foot.L</Value>
+			<Value>foot.R</Value>	
 							
 			<!-- add physic bone names for other skeletons that use this system from here -->
 		</Enum>
