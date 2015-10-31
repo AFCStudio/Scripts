@@ -103,7 +103,7 @@ end
 function Light:OnPropertyChange()
 	self:OnReset();
 	self:ActivateLight( self.bActive );
-	if (self.Properties.Options.bAffectsThisAreaOnly == true) then
+	if (self.Properties.Options.bAffectsThisAreaOnly == 1) then
 		self:UpdateLightClipBounds(LightSlot);
 	end
 end
@@ -129,7 +129,7 @@ function Light:OnSysSpecLightChanged()
 end
 
 function Light:OnLevelLoaded()
-	if (self.Properties.Options.bAffectsThisAreaOnly == true) then
+	if (self.Properties.Options.bAffectsThisAreaOnly == 1) then
 		self:UpdateLightClipBounds(LightSlot);
 	end
 end

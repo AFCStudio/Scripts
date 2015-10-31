@@ -22,6 +22,7 @@ ParticleEffect = {
 		{
 			bEnableAudio=0,             -- Toggles update of audio data.
 			audioRTPCRtpc="particlefx", -- The default audio RTPC name used.
+			esSoundObstructionType = "Ignore",
 		}
 	},
 	Editor = {

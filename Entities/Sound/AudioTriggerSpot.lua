@@ -11,7 +11,8 @@ AudioTriggerSpot = {
 		audioTriggerPlayTriggerName = "",
 		audioTriggerStopTriggerName = "",
 		bSerializePlayState = true, -- Determines if execution after de-serialization is needed.
-		eiSoundObstructionType = 1, -- Anything greater than 1 will be reset to 2.
+		bTriggerAreasOnMove = false, -- Triggers area events or not. (i.e. dynamic environment updates on move)
+		eiSoundObstructionType = 1, -- Clamped between 1 and 3. 1=Ignore, 2=SingleRay, 3=MultiRay
 		bPlayOnX = false,
 		bPlayOnY = false,
 		bPlayOnZ = false,
@@ -29,6 +30,7 @@ AudioTriggerSpot = {
 	
 	bIsHidden = false,
 	bIsPlaying = false,
+	bWasPlaying = false,
 	bHasMoved = false,
 	bOriginalEnabled = true,
 }
@@ -47,7 +49,7 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:_SetObstruction()
-	local nStateIdx = self.Properties.eiSoundObstructionType + 1;
+	local nStateIdx = self.Properties.eiSoundObstructionType;
 	
 	if ((self.tObstructionType.hSwitchID ~= nil) and (self.tObstructionType.tStateIDs[nStateIdx] ~= nil)) then
 		self:SetAudioSwitchState(self.tObstructionType.hSwitchID, self.tObstructionType.tStateIDs[nStateIdx], self:GetDefaultAuxAudioProxyID());
@@ -78,30 +80,33 @@ end
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:OnSpawn()	
 	self:SetFlags(ENTITY_FLAG_CLIENT_ONLY, 0);
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+	end
 end
 
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:OnSave(save)	
 	save.Properties = self.Properties;
-	save.bIsPlaying = self.bIsPlaying;
+	save.bWasPlaying = self.bIsPlaying;
 end
 
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:OnLoad(load)
 	self.Properties = load.Properties;
-	self.bIsPlaying = load.bIsPlaying;
+	self.bWasPlaying = load.bWasPlaying;
 end
 
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:OnPostLoad()
-	self:SetCurrentAudioEnvironments();
-	
-	if (self.bIsPlaying and self.Properties.bSerializePlayState) then
-		self.bIsPlaying = false;
-		self:Play();
-	else
-		self.bIsPlaying = false;
-	end	
+	if (self.Properties.bSerializePlayState) then
+		if (self.bIsPlaying and not self.bWasPlaying) then
+			self:Stop();
+		elseif (not self.bIsPlaying and self.bWasPlaying) then
+			self:Play();
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -113,10 +118,10 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:OnPropertyChange()	
-	if (self.Properties.eiSoundObstructionType < 0) then
-		self.Properties.eiSoundObstructionType = 0;
-	elseif (self.Properties.eiSoundObstructionType > 2) then
-		self.Properties.eiSoundObstructionType = 2;
+	if (self.Properties.eiSoundObstructionType < 1) then
+		self.Properties.eiSoundObstructionType = 1;
+	elseif (self.Properties.eiSoundObstructionType > 3) then
+		self.Properties.eiSoundObstructionType = 3;
 	end
 	
 	self:_LookupTriggerIDs();

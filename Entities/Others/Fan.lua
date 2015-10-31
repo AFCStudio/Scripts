@@ -79,6 +79,7 @@ function Fan:OnReset()
 	elseif(not EmptyString(props.DestroyedSubObject))then
 		self:LoadSubObject(1,props.fileModel,props.DestroyedSubObject);
 	end;
+	self:Activate(1);
 	self:SetCurrentSlot(0);
 	self:PhysicalizeThis(0);
 	if(props.bTurnedOn==1)then
@@ -213,13 +214,11 @@ Fan.Server.TurnedOn =
 {
 	OnBeginState = function( self )
 		BroadcastEvent(self, "TurnOn")
-		self:SetTimer(0,25);
 	end,
-	OnTimer = function(self,timerId,msec)
+	OnUpdate = function (self, dt)
 		self:GetAngles(g_Vectors.temp_v1);
-		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed;
+		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed*dt/0.025;
 		self:SetAngles(g_Vectors.temp_v1);
-		self:SetTimer(0,25);
 	end,
 	OnEndState = function( self )
 
@@ -239,20 +238,19 @@ Fan.Server.TurnedOff =
 Fan.Server.Accelerating =
 {
 	OnBeginState = function( self )
-		self:SetTimer(0,25);
+
 	end,
-	OnTimer = function(self,timerId,msec)
+	OnUpdate = function(self, dt)
 		self:GetAngles(g_Vectors.temp_v1);
-		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed;
+		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed*dt/0.025;
 		self:SetAngles(g_Vectors.temp_v1);
 
-		if(self.fCurrentSpeed<=self.fDesiredSpeed)then
-			self.fCurrentSpeed=self.fCurrentSpeed+(self.fDesiredSpeed/100);
-			self:SetTimer(0,25);
+		if(self.fCurrentSpeed<self.fDesiredSpeed)then
+			self.fCurrentSpeed=self.fCurrentSpeed+(self.fDesiredSpeed/100)*dt/0.025;
 		else
+			self.fCurrentSpeed=self.fDesiredSpeed;
 			self:GotoState("TurnedOn");
 		end;
-
 	end,
 	OnEndState = function( self )
 
@@ -262,16 +260,15 @@ Fan.Server.Accelerating =
 Fan.Server.Decelerating =
 {
 	OnBeginState = function( self )
-		self:SetTimer(0,25);
-	end,
-	OnTimer = function(self,timerId,msec)
-		self:GetAngles(g_Vectors.temp_v1);
-		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed;
-		self:SetAngles(g_Vectors.temp_v1);
 
+	end,
+	OnUpdate = function(self, dt)
+		self:GetAngles(g_Vectors.temp_v1);
+		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed*dt/0.025;
+		self:SetAngles(g_Vectors.temp_v1);
+		
 		if(self.fCurrentSpeed>0.01)then
-			self.fCurrentSpeed=self.fCurrentSpeed-(self.fDesiredSpeed/100);
-			self:SetTimer(0,25);
+			self.fCurrentSpeed=self.fCurrentSpeed-(self.fDesiredSpeed/100)*dt/0.025;
 		else
 			self:GotoState("TurnedOff");
 		end;
@@ -286,15 +283,13 @@ Fan.Server.Destroyed =
 	OnBeginState = function( self )
 		self:Explode();
 		BroadcastEvent(self, "Destroyed")
-		self:SetTimer(0,25);
 	end,
-	OnTimer = function(self,timerId,msec)
+	OnUpdate = function(self, dt)
 		self:GetAngles(g_Vectors.temp_v1);
-		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed;
+		g_Vectors.temp_v1.z=g_Vectors.temp_v1.z+self.fCurrentSpeed*dt/0.025;
 		self:SetAngles(g_Vectors.temp_v1);
 		if(self.fCurrentSpeed>0.01)then
-			self.fCurrentSpeed=self.fCurrentSpeed-((self.fDesiredSpeed/100)*2);
-			self:SetTimer(0,25);
+			self.fCurrentSpeed=self.fCurrentSpeed-((self.fDesiredSpeed/100)*2)*dt/0.025;
 		end;
 	end,
 	OnEndState = function( self )
@@ -324,3 +319,4 @@ Fan.FlowEvents =
 		Destroyed = "bool",
 	},
 }
+

@@ -17,15 +17,15 @@ FogVolume =
 		FallOffDirLati = 90.0, --[0,360,1,"Controls the latitude of the world space fall off direction of the fog. 90 lets the fall off direction point upwards in world space."]
 		FallOffShift = 0.0, --[-100,100,0.1,"Controls how much to shift the fog density distribution along the fall off direction in world units (m)."]
 		FallOffScale = 1.0, --[-100,100,0.01,"Scales the density distribution along the fall off direction. Higher values will make the fog fall off more rapidly and generate thicker fog layers along the negative fall off direction."]
-		SoftEdges = 1.0, --[0,1,0.01,"Specifies a factor that is used to soften the edges of the fog volume when viewed from outside."
-		RampStart = 0.0, --[0,30000,0.0,"Specifies the start distance of fog density ramp in world units (m)."]
-		RampEnd = 50.0, --[0,30000,50.0,"Specifies the end distance of fog density ramp in world units (m)."]
+		SoftEdges = 1.0, --[0,1,0.01,"Specifies a factor that is used to soften the edges of the fog volume when viewed from outside."]
+		RampStart = 0.0, --[0,30000,1.0,"Specifies the start distance of fog density ramp in world units (m)."]
+		RampEnd = 50.0, --[0,30000,1.0,"Specifies the end distance of fog density ramp in world units (m)."]
 		RampInfluence = 0.0, --[0,1,0.0,"Controls the influence of fog density ramp."]
-		WindInfluence = 1.0, --[0,20,1.0,"Controls the influence of the wind."]
-		DensityNoiseScale = 0.0, --[0,10,0.0,"Scales the noise for the density."]
-		DensityNoiseOffset = 0.0, --[-2,2,0.0,"Offsets the noise for the density."]
-		DensityNoiseTimeFrequency = 0.0, --[0,10,0.0,"Controls the time frequency of the noise for the density."]
-		DensityNoiseFrequency = { x = 10, y = 10, z = 10 }, --[1,100,10,"Controls the spatial frequency of the noise for the density."]
+		WindInfluence = 1.0, --[0,20,0.0,"Controls the influence of the wind."]
+		DensityNoiseScale = 1.0, --[0.0,10.0,0.0,"Scales the noise for the density."]
+		DensityNoiseOffset = 1.0, --[-2,2,0.0,"Offsets the noise for the density."]
+		DensityNoiseTimeFrequency = 0.0, --[0,1,0.0,"Controls the time frequency of the noise for the density."]
+		DensityNoiseFrequency = { x = 10, y = 10, z = 10 }, --[1,1000,0.1,"Controls the spatial frequency of the noise for the density."]
 		bIgnoresVisAreas = 0, --[0,1,0,"Controls whether this entity should respond to visareas."]
 		bAffectsThisAreaOnly = 0, --[0,1,0,"Set this parameter to false to make this entity affect in multiple visareas."]
 	},
@@ -158,6 +158,51 @@ function FogVolume:Event_FadeValue(i, val)
 end
 
 -------------------------------------------------------
+-- Set Enabled Event
+-------------------------------------------------------
+function FogVolume:Event_Enabled(i, enable)
+	if (enable) then
+		self:CreateFogVolume();
+		self:ActivateOutput( "Enabled", true );
+	else
+		self:DeleteFogVolume();
+		self:ActivateOutput( "Enabled", false );
+	end
+end
+
+-------------------------------------------------------
+-- Set GlobalDensity Event
+-------------------------------------------------------
+function FogVolume:Event_SetGlobalDensity(i, val)
+	self.Properties.GlobalDensity = val;
+	self:FadeGlobalDensity(0, 0, self.Properties.GlobalDensity);
+end
+
+-------------------------------------------------------
+-- Set DensityNoiseOffset Event
+-------------------------------------------------------
+function FogVolume:Event_SetDensityNoiseOffset(i, val)
+	self.Properties.DensityNoiseOffset = val;
+	self:CreateFogVolume();
+end
+
+-------------------------------------------------------
+-- Set DensityNoiseScale Event
+-------------------------------------------------------
+function FogVolume:Event_SetDensityNoiseScale(i, val)
+	self.Properties.DensityNoiseScale = val;
+	self:CreateFogVolume();
+end
+
+-------------------------------------------------------
+-- Set WindInfluence Event
+-------------------------------------------------------
+function FogVolume:Event_SetWindInfluence(i, val)
+	self.Properties.WindInfluence = val;
+	self:CreateFogVolume();
+end
+
+-------------------------------------------------------
 -- Serialization
 -------------------------------------------------------
 
@@ -182,15 +227,14 @@ FogVolume.FlowEvents =
 {
 	Inputs =
 	{
-		Hide  = { FogVolume.Event_Hide, "bool" },
-		Show  = { FogVolume.Event_Show, "bool" },
-		x_Time  = { FogVolume.Event_FadeTime, "float" },
-		y_Value = { FogVolume.Event_FadeValue, "float" },
-		z_Fade  = { FogVolume.Event_Fade, "bool" },
+		AO_Enabled  = { FogVolume.Event_Enabled, "bool" },
+		EV_Density  = { FogVolume.Event_SetGlobalDensity, "float" },
+		EV_DensityNoiseOffset  = { FogVolume.Event_SetDensityNoiseOffset, "float" },
+		EV_DensityNoiseScale  = { FogVolume.Event_SetDensityNoiseScale, "float" },
+		EV_WindInfluence  = { FogVolume.Event_SetWindInfluence, "float" },
 	},
 	Outputs =
 	{
-		Hide = "bool",
-		Show = "bool",
+		Enabled = "bool"
 	},
 }

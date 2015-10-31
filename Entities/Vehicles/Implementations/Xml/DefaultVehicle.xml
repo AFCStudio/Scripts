@@ -26,7 +26,6 @@
       <ActionParts />
     </Seat>
   </Seats>
-  <DamageExtensions fallingDamageThreshold="-15" />
   <MovementParams>
     <ArcadeWheeled steerSpeed="5" steerSpeedMin="100" steerSpeedScale="0.75" steerSpeedScaleMin="1" kvSteerMax="20" v0SteerMax="55" steerRelaxation="100" vMaxSteerMax="40" pedalLimitMax="0" rpmGearShiftSpeed="2">
       <Handling>

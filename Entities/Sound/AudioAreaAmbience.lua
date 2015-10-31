@@ -15,9 +15,10 @@ AudioAreaAmbience = {
 		audioTriggerStopTrigger = "",
 		audioRTPCRtpc = "",
 		audioEnvironmentEnvironment = "",
-		eiSoundObstructionType = 1, -- Anything greater than 2 will be reset to 2.
+		eiSoundObstructionType = 1, -- Clamped between 1 and 3. 1=Ignore, 2=SingleRay, 3=MultiRay
 		fRtpcDistance = 5.0,
 		fEnvironmentDistance = 5.0,
+		audioRTPCGlobalRtpc = "",
 	},
   
 	fFadeValue = 0.0,
@@ -28,8 +29,10 @@ AudioAreaAmbience = {
 	hCurrentOnTriggerID = nil,
 	hCurrentOffTriggerID = nil, -- only used in OnPropertyChange()
 	hRtpcID = nil,
+	hGlobalRtpcID = nil,
 	hEnvironmentID = nil,
 	tObstructionType = {},
+	bIsHidden = false,
 	bIsPlaying = false,
 	bOriginalEnabled = true,
 }
@@ -39,6 +42,7 @@ function AudioAreaAmbience:_LookupControlIDs()
 	self.hOnTriggerID = AudioUtils.LookupTriggerID(self.Properties.audioTriggerPlayTrigger);	
 	self.hOffTriggerID = AudioUtils.LookupTriggerID(self.Properties.audioTriggerStopTrigger);
 	self.hRtpcID = AudioUtils.LookupRtpcID(self.Properties.audioRTPCRtpc);
+	self.hGlobalRtpcID = AudioUtils.LookupRtpcID(self.Properties.audioRTPCGlobalRtpc);
 	self.hEnvironmentID = AudioUtils.LookupAudioEnvironmentID(self.Properties.audioEnvironmentEnvironment);
 end
 
@@ -50,7 +54,7 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioAreaAmbience:_SetObstruction()
-	local nStateIdx = self.Properties.eiSoundObstructionType + 1;
+	local nStateIdx = self.Properties.eiSoundObstructionType;
 	
 	if ((self.tObstructionType.hSwitchID ~= nil) and (self.tObstructionType.tStateIDs[nStateIdx] ~= nil)) then
 		self:SetAudioSwitchState(self.tObstructionType.hSwitchID, self.tObstructionType.tStateIDs[nStateIdx], self:GetDefaultAuxAudioProxyID());
@@ -87,6 +91,9 @@ function AudioAreaAmbience:_UpdateRtpc()
 	if (self.hRtpcID ~= nil) then
 		self:SetAudioRtpcValue(self.hRtpcID, self.fFadeValue, self:GetDefaultAuxAudioProxyID());
 	end
+	if (self.hGlobalRtpcID ~= nil) then
+		Sound.SetAudioRtpcValue(self.hGlobalRtpcID, self.fFadeValue);
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -116,10 +123,10 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioAreaAmbience:OnPropertyChange()
-	if (self.Properties.eiSoundObstructionType < 0) then
-		self.Properties.eiSoundObstructionType = 0;
-	elseif (self.Properties.eiSoundObstructionType > 2) then
-		self.Properties.eiSoundObstructionType = 2;
+	if (self.Properties.eiSoundObstructionType < 1) then
+		self.Properties.eiSoundObstructionType = 1;
+	elseif (self.Properties.eiSoundObstructionType > 3) then
+		self.Properties.eiSoundObstructionType = 3;
 	end
 	
 	self:_LookupControlIDs();
@@ -205,24 +212,24 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioAreaAmbience:UpdateFadeValue(player, fFade, fDistSq)
-  if (not(self.Properties.bEnabled) or (fFade == 0.0 and fDistSq == 0.0)) then
-    self.fFadeValue = 0.0;
+	if (not(self.Properties.bEnabled) or (fFade == 0.0 and fDistSq == 0.0)) then
+		self.fFadeValue = 0.0;
 		self:_UpdateRtpc();
-    do return end;
-  end
-		
-  if (self.Properties.fRtpcDistance > 0.0) then    
-    if (self.nState == 2) then
-    	if (self.fFadeValue ~= fFade) then
-    	  self.fFadeValue = math.abs(fFade);
+		do return end;
+	end
+	
+	if (self.Properties.fRtpcDistance > 0.0) then
+		if (self.nState == 2) then
+			if (self.fFadeValue ~= fFade) then
+				self.fFadeValue = math.abs(fFade);
 				self:_UpdateRtpc();
-    	end
-    else
-  		local fLocalFade = 1.0 - (math.sqrt(fDistSq) / self.Properties.fRtpcDistance);
+			end
+		else
+			local fLocalFade = 1.0 - (math.sqrt(fDistSq) / self.Properties.fRtpcDistance);
 			self.fFadeValue = math.max(0, fLocalFade);
 			self:_UpdateRtpc();
-    end
-  end
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -237,6 +244,7 @@ AudioAreaAmbience.Server={
 
 ----------------------------------------------------------------------------------------
 AudioAreaAmbience.Client={
+	----------------------------------------------------------------------------------------
 	OnInit = function(self)
 		self:RegisterForAreaEvents(1);
 		self:_LookupControlIDs();
@@ -244,13 +252,27 @@ AudioAreaAmbience.Client={
 		self:_SetObstruction();
 		self:CliSrv_OnInit();
 	end,
-  
+	
+	----------------------------------------------------------------------------------------
 	OnShutDown = function(self)
 		self:Stop();
 		self.nState = 0;
-    self:RegisterForAreaEvents(0);
+		self:RegisterForAreaEvents(0);
 	end,
 	
+	----------------------------------------------------------------------------------------
+	OnHidden = function(self)
+		self:Stop();
+		self.bIsHidden = true;
+	end,
+	
+	----------------------------------------------------------------------------------------
+	OnUnHidden = function(self)
+		self.bIsHidden = false;
+		self:Play();
+	end,
+	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerEnterNearArea = function(self, player, nAreaID, fFade)		
 		if (self.nState == 0) then
 			self.nState = 1;
@@ -260,13 +282,15 @@ AudioAreaAmbience.Client={
 		end
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerMoveNearArea = function(self, player, areaId, fFade, fDistsq)
 		self.nState = 1;
 		self:UpdateFadeValue(player, fFade, fDistsq);
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerEnterArea = function(self, player, areaId, fFade)
-    if (self.nState == 0) then
+		if (self.nState == 0) then
 			-- possible if the listener is teleported or gets spawned inside the area
 			-- technically, the listener enters the Near Area and the Inside Area at the same time
 			self.nState = 2;
@@ -275,27 +299,30 @@ AudioAreaAmbience.Client={
 			self.nState = 2;
 		end
 		
-	  self.fFadeValue = 1.0;
+		self.fFadeValue = 1.0;
 		self:_UpdateRtpc();
 		self:_DisableObstruction();
 	end,	
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerProceedFadeArea = function(self, player, areaId, fExternalFade)
-	  -- fExternalFade holds the fade value which was calculated by an inner, higher priority area
-	  -- in the AreaManager to fade out the outer sound dependent on the largest fade distance of all attached entities
-	  if (fExternalFade > 0.0) then
-	  	self.nState = 2;
-	  	self:UpdateFadeValue(player, fExternalFade, 0.0);
-	  else
-	  	self:UpdateFadeValue(player, 0.0, 0.0);
-	  end
+		-- fExternalFade holds the fade value which was calculated by an inner, higher priority area
+		-- in the AreaManager to fade out the outer sound dependent on the largest fade distance of all attached entities
+		if (fExternalFade > 0.0) then
+			self.nState = 2;
+			self:UpdateFadeValue(player, fExternalFade, 0.0);
+		else
+			self:UpdateFadeValue(player, 0.0, 0.0);
+		end
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerLeaveArea = function(self, player, nAreaID, fFade)
 		self.nState = 1;
 		self:_SetObstruction();
 	end,	
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerLeaveNearArea = function(self, player, nAreaID, fFade)
 		self:Stop();
 		self.nState = 0;
@@ -303,10 +330,14 @@ AudioAreaAmbience.Client={
 		self:_UpdateRtpc();
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnUnBindThis = function(self)
+		self:Stop();
 		self.nState = 0;
+		self:RegisterForAreaEvents(0);
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnSoundDone = function(self, hTriggerID)
 		if (self.hOnTriggerID == hTriggerID) then
 			self:ActivateOutput( "Done",true );
@@ -318,15 +349,17 @@ AudioAreaAmbience.Client={
 -- Event Handlers
 ----------------------------------------------------------------------------------------
 function AudioAreaAmbience:Event_Enable(sender)
-  self.Properties.bEnabled = true;
-  self:OnPropertyChange();
+	self.Properties.bEnabled = true;
+	self:OnPropertyChange();
 end
 
+----------------------------------------------------------------------------------------
 function AudioAreaAmbience:Event_Disable(sender)
-  self.Properties.bEnabled = false;
-  self:OnPropertyChange();
+	self.Properties.bEnabled = false;
+	self:OnPropertyChange();
 end
 
+----------------------------------------------------------------------------------------
 AudioAreaAmbience.FlowEvents =
 {
 	Inputs =

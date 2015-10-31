@@ -212,14 +212,6 @@ function VehicleBaseAI:OnLoadAI(saved)
 	if(saved.AI) then 
 		self.AI = saved.AI;
 	end
-	
-	if(self.Properties and self.Properties.aicharacter_character) then 
-		local characterTable = AICharacter[self.Properties.aicharacter_character];
-		if(characterTable and characterTable.OnLoad) then 
-			characterTable.OnLoad(self,saved);
-		end
-	end	
-
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -227,12 +219,6 @@ function VehicleBaseAI:OnSaveAI(save)
 
 	if(self.AI) then 
 		save.AI = self.AI;
-	end
-	if(self.Properties and self.Properties.aicharacter_character) then 
-		local characterTable = AICharacter[self.Properties.aicharacter_character];
-		if(characterTable and characterTable.OnSave) then 
-			characterTable.OnSave(self,save);
-		end
 	end
 end
 

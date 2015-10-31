@@ -328,7 +328,6 @@
 		</Part>
 	</Parts>
 	<Helpers>
-		<Helper name="driver_eye_pos" position="-0.62769997,0.2036,1.5451" direction="0,0.995,-0.0995" part="hull"/>
 		<Helper name="passenger01_enter_pos" position="-2,0.5,0" direction="0,0,0" part="hull"/>
 		<Helper name="passenger02_enter_pos" position="2,0.5,0" direction="0,0,0" part="hull"/>
 		<Helper name="passenger03_enter_pos" position="-2,-0.5,0" direction="0,0,0" part="hull"/>

@@ -89,7 +89,7 @@ end
 function EnvironmentLight:OnPropertyChange()
 	self:OnReset();
 	self:ActivateLight( self.bActive );
-	if (self.Properties.Options.bAffectsThisAreaOnly == true) then
+	if (self.Properties.Options.bAffectsThisAreaOnly == 1) then
 		self:UpdateLightClipBounds(LightSlot);
 	end
 end
@@ -111,7 +111,7 @@ function EnvironmentLight:OnPropertyAnimated( name )
 end
 
 function EnvironmentLight:OnUpdate(dt)
-	if (self.bActive==true and self.Properties.Options.bAffectsThisAreaOnly == true) then
+	if (self.bActive == 1 and self.Properties.Options.bAffectsThisAreaOnly == 1) then
 		self:UpdateLightClipBounds(LightSlot);
 	end
 

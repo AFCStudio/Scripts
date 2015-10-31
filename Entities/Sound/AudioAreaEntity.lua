@@ -12,7 +12,7 @@ AudioAreaEntity = {
 	Properties = {
 		bEnabled = true,
 		audioEnvironmentEnvironment = "",
-		eiSoundObstructionType = 1, -- Anything greater than 1 will be reset to 2.
+		eiSoundObstructionType = 1, -- Clamped between 1 and 3. 1=Ignore, 2=SingleRay, 3=MultiRay
 		fFadeDistance = 5.0,
 		fEnvironmentDistance = 5.0,
 	},
@@ -55,7 +55,7 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioAreaEntity:_SetObstruction()
-	local nStateIdx = self.Properties.eiSoundObstructionType + 1;
+	local nStateIdx = self.Properties.eiSoundObstructionType;
 	
 	if ((self.tObstructionType.hSwitchID ~= nil) and (self.tObstructionType.tStateIDs[nStateIdx] ~= nil)) then
 		self:SetAudioSwitchState(self.tObstructionType.hSwitchID, self.tObstructionType.tStateIDs[nStateIdx], self:GetDefaultAuxAudioProxyID());
@@ -100,10 +100,10 @@ end
 function AudioAreaEntity:OnPropertyChange()
 	self:_UpdateParameters();
 	
-	if (self.Properties.eiSoundObstructionType < 0) then
-		self.Properties.eiSoundObstructionType = 0;
-	elseif (self.Properties.eiSoundObstructionType > 1) then
-		self.Properties.eiSoundObstructionType = 2;
+	if (self.Properties.eiSoundObstructionType < 1) then
+		self.Properties.eiSoundObstructionType = 1;
+	elseif (self.Properties.eiSoundObstructionType > 3) then
+		self.Properties.eiSoundObstructionType = 3;
 	end
 	
 	if (self.nState == 1) then -- near
