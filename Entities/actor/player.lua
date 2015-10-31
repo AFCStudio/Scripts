@@ -55,7 +55,7 @@ Player =
         shadowFileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
         clientFileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
 
-		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_PlayerSP.xml",
+		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_MP.xml",
 	},
 
 	PropertiesInstance = 
