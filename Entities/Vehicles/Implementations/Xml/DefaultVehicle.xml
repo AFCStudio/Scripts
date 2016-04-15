@@ -6,15 +6,13 @@
   <Parts>
     <Part class="Static" disableCollision="0" mass="100" name="body">
     	<Static filename="Objects/default/primitive_box.cgf" geometry="" />
-      <Helpers>        
-      </Helpers>
     </Part>
   </Parts>
   <Seats>
-    <Seat AimPart="" enterHelper="" isDriver="1" name="driver" part="" sitHelper="" useBoundsForEntering="1" actionMap="vehicle_driver">
+    <Seat isDriver="1" name="driver" usesSeatForEntering="1" actionMap="vehicle_driver">
       <Views>
         <View class="FirstPerson" canRotate="0">
-          <FirstPerson helper="" />
+          <FirstPerson/>
         </View>
         <View class="ThirdPerson" canRotate="0">
           <ThirdPerson distance="5" heightOffset="1" speed="5" />

@@ -83,6 +83,10 @@ function AudioTriggerSpot:OnSpawn()
 	
 	if (self.Properties.bTriggerAreasOnMove) then
 		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
 	end
 end
 
@@ -128,6 +132,14 @@ function AudioTriggerSpot:OnPropertyChange()
 	self:_SetObstruction();
 	self:SetCurrentAudioEnvironments();
 	self:SetAudioProxyOffset(g_Vectors.v000, self:GetDefaultAuxAudioProxyID());
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
 	
 	if ((self.bIsPlaying) and (self.hCurrentOnTriggerID ~= self.hOnTriggerID)) then
 		-- Stop a possibly playing instance if the on-trigger changed!

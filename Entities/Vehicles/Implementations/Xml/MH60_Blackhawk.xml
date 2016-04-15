@@ -161,7 +161,7 @@
 	<Actions>
 	</Actions>
 	<Seats>
-		<Seat name="pilot" part="hull" enterHelper="pilot_enter_pos" exitHelper="pilot_enter_pos" sitHelper="pilot_sit_pos" isDriver="1" isPassengerShielded="1" AimPart="" seatGroupIndex="1" actionMap="helicopter">
+		<Seat name="pilot" enterHelper="pilot_enter_pos" exitHelper="pilot_enter_pos" sitHelper="pilot_sit_pos" isDriver="1" isPassengerShielded="1" AimPart="" seatGroupIndex="1" actionMap="helicopter">
 			<Views>
 				<View class="ActionThirdPerson" canRotate="0">
 					<ActionThirdPerson cameraPosOffset="0,2,1" cameraAimOffset="0,0,0" lagSpeed="5" velocityMult="0.009,0.009,0.009"/>
@@ -185,82 +185,82 @@
 			</SeatActions>
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="gunner" part="hull" enterHelper="gunner_enter_pos" exitHelper="gunner_enter_pos" sitHelper="gunner_sit_pos" isDriver="0" AimPart="" seatGroupIndex="2">
+		<Seat name="gunner" enterHelper="gunner_enter_pos" exitHelper="gunner_enter_pos" sitHelper="gunner_sit_pos" isDriver="0" AimPart="" seatGroupIndex="2">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger1" part="hull" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger3_sit_pos" isDriver="0" AimPart="" seatGroupIndex="3">
+		<Seat name="passenger1" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger3_sit_pos" isDriver="0" AimPart="" seatGroupIndex="3">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger2" part="hull" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger4_sit_pos" isDriver="0" AimPart="" seatGroupIndex="3">
+		<Seat name="passenger2" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger4_sit_pos" isDriver="0" AimPart="" seatGroupIndex="3">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger3" part="hull" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger5_sit_pos" isDriver="0" AimPart="" seatGroupIndex="4">
+		<Seat name="passenger3" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger5_sit_pos" isDriver="0" AimPart="" seatGroupIndex="4">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger4" part="hull" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger6_sit_pos" isDriver="0" AimPart="" seatGroupIndex="4">
+		<Seat name="passenger4" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger6_sit_pos" isDriver="0" AimPart="" seatGroupIndex="4">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger5" part="hull" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger7_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
+		<Seat name="passenger5" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger7_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger6" part="hull" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger8_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
+		<Seat name="passenger6" enterHelper="passenger_enter_left_pos" exitHelper="passenger_enter_left_pos" sitHelper="passenger8_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger7" part="hull" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger9_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
+		<Seat name="passenger7" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger9_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="passenger8" part="hull" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger10_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
+		<Seat name="passenger8" enterHelper="passenger_enter_right_pos" exitHelper="passenger_enter_right_pos" sitHelper="passenger10_sit_pos" isDriver="0" AimPart="" seatGroupIndex="5">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-45,0,-70" rotationMax="25,0,70">
-					<FirstPerson helper=""/>
+					<FirstPerson />
 				</View>
 			</Views>
 			<SeatActions />
@@ -299,9 +299,9 @@
 		</Exhaust>
 		<DamageEffects>
 			<DamageEffect name="EngineDamaged25" helper="engineSmokeOut" effect="Vehicles.MH60_BlackHawk.Damage.Engine_25"/>
-			<DamageEffect name="EngineDamaged75" helper="engineSmokeOut" effect="Vehicles.MH60_BlackHawk.Damage.Engine_75" scaleMax="1" gravityDirection="0,0,1" pulsePeriod="0"/>
-			<DamageEffect name="HullDamaged25" helper="burningPos" effect="Vehicles.MH60_BlackHawk.Damage.Hull_25" scaleMax="1" gravityDirection="0,0,1" pulsePeriod="0"/>
-			<DamageEffect name="HullDamaged75" helper="burningPos" effect="Vehicles.MH60_BlackHawk.Damage.Hull_75" scaleMax="1" gravityDirection="0,0,1" pulsePeriod="0"/>
+			<DamageEffect name="EngineDamaged75" helper="engineSmokeOut" effect="Vehicles.MH60_BlackHawk.Damage.Engine_75" gravityDirection="0,0,1" pulsePeriod="0"/>
+			<DamageEffect name="HullDamaged25" helper="burningPos" effect="Vehicles.MH60_BlackHawk.Damage.Hull_25" gravityDirection="0,0,1" pulsePeriod="0"/>
+			<DamageEffect name="HullDamaged75" helper="burningPos" effect="Vehicles.MH60_BlackHawk.Damage.Hull_75" gravityDirection="0,0,1" pulsePeriod="0"/>
 			<DamageEffect name="VehicleDestroyed" helper="burningPos" effect="Vehicles.MH60_BlackHawk.Damage.Destroyed"/>
 			<DamageEffect name="RotorDamaged" helper="Rotor" effect="Vehicles.MH60_BlackHawk.Damage.RotorDamaged"/>
 			<DamageEffect name="RotorExplosion" helper="Rotor" effect="Vehicles.MH60_BlackHawk.Damage.RotorDestroyed"/>

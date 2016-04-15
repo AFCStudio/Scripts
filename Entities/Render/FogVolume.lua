@@ -30,12 +30,6 @@ FogVolume =
 		bAffectsThisAreaOnly = 0, --[0,1,0,"Set this parameter to false to make this entity affect in multiple visareas."]
 	},
 
-	Fader = 
-	{
-		fadeTime = 0.0,
-		fadeToValue = 0.0,
-	},
-
 	Editor = 
 	{
 		Model = "Editor/Objects/invisiblebox.cgf",
@@ -118,46 +112,6 @@ function FogVolume:OnReset()
 end
 
 -------------------------------------------------------
--- Hide Event
--------------------------------------------------------
-function FogVolume:Event_Hide()
-	self:DeleteFogVolume();
-	BroadcastEvent(self, "Hide");
-end
-
--------------------------------------------------------
--- Show Event
--------------------------------------------------------
-function FogVolume:Event_Show()
-	self:CreateFogVolume();
-	BroadcastEvent(self, "Show");
-end
-
--------------------------------------------------------
--- Fade Event
--------------------------------------------------------
-function FogVolume:Event_Fade()
-	--System.Log("Do Fading");
-	self:FadeGlobalDensity(0, self.Fader.fadeTime, self.Fader.fadeToValue);
-end
-
--------------------------------------------------------
--- Fade Time Event
--------------------------------------------------------
-function FogVolume:Event_FadeTime(i, time)
-	--System.Log("Fade time "..tostring(time));
-	self.Fader.fadeTime = time;
-end
-
--------------------------------------------------------
--- Fade Value Event
--------------------------------------------------------
-function FogVolume:Event_FadeValue(i, val)
-	--System.Log("Fade val "..tostring(val));
-	self.Fader.fadeToValue = val;
-end
-
--------------------------------------------------------
 -- Set Enabled Event
 -------------------------------------------------------
 function FogVolume:Event_Enabled(i, enable)
@@ -191,6 +145,14 @@ end
 -------------------------------------------------------
 function FogVolume:Event_SetDensityNoiseScale(i, val)
 	self.Properties.DensityNoiseScale = val;
+	self:CreateFogVolume();
+end
+
+-------------------------------------------------------
+-- Set DensityNoiseTimeFrequency Event
+-------------------------------------------------------
+function FogVolume:Event_SetDensityNoiseTimeFrequency(i, val)
+	self.Properties.DensityNoiseTimeFrequency = val;
 	self:CreateFogVolume();
 end
 
@@ -231,6 +193,7 @@ FogVolume.FlowEvents =
 		EV_Density  = { FogVolume.Event_SetGlobalDensity, "float" },
 		EV_DensityNoiseOffset  = { FogVolume.Event_SetDensityNoiseOffset, "float" },
 		EV_DensityNoiseScale  = { FogVolume.Event_SetDensityNoiseScale, "float" },
+		EV_DensityNoiseTimeFrequency  = { FogVolume.Event_SetDensityNoiseTimeFrequency, "float" },
 		EV_WindInfluence  = { FogVolume.Event_SetWindInfluence, "float" },
 	},
 	Outputs =

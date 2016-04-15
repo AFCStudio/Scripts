@@ -221,12 +221,11 @@ function AudioAreaAmbience:UpdateFadeValue(player, fFade, fDistSq)
 	if (self.Properties.fRtpcDistance > 0.0) then
 		if (self.nState == 2) then
 			if (self.fFadeValue ~= fFade) then
-				self.fFadeValue = math.abs(fFade);
+				self.fFadeValue = fFade;
 				self:_UpdateRtpc();
 			end
 		else
-			local fLocalFade = 1.0 - (math.sqrt(fDistSq) / self.Properties.fRtpcDistance);
-			self.fFadeValue = math.max(0, fLocalFade);
+			self.fFadeValue = fFade;
 			self:_UpdateRtpc();
 		end
 	end
@@ -328,6 +327,11 @@ AudioAreaAmbience.Client={
 		self.nState = 0;
 		self.fFadeValue = 0.0;
 		self:_UpdateRtpc();
+	end,
+	
+	----------------------------------------------------------------------------------------
+	OnBindThis = function(self)
+		self:RegisterForAreaEvents(1);
 	end,
 	
 	----------------------------------------------------------------------------------------

@@ -93,6 +93,8 @@ function BasicEntity:SetupModel()
 
 	if (Properties.Physics.bPhysicalize == 1) then
 		self:PhysicalizeThis();
+	else
+		self:DestroyPhysics();
 	end
 end
 

@@ -125,26 +125,26 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioAreaEntity:UpdateFadeValue(player, fFade, fDistSq)
-  if (not(self.Properties.bEnabled) or (fFade == 0.0 and fDistSq == 0.0)) then
+	if (not(self.Properties.bEnabled) or (fFade == 0.0 and fDistSq == 0.0)) then
 		if (self.fFadeValue ~= 0.0) then
-			self:_ActivateOutput("FadeValue", 0.0);
+			self.fFadeValue = 0.0;
+			self:_ActivateOutput("FadeValue", self.fFadeValue);
 		end
-    self.fFadeValue = 0.0;
-    do return end;
-  end
 		
-  if (self.Properties.fFadeDistance > 0.0) then    
-    if (self.nState == 2) then
-    	if (self.fFadeValue ~= fFade) then
-    	  self.fFadeValue = math.abs(fFade);
-    		self:_ActivateOutput("FadeValue", self.fFadeValue);
-    	end
-    else
-  		local fLocalFade = 1.0 - (math.sqrt(fDistSq) / self.Properties.fFadeDistance);
-			self.fFadeValue = math.max(0, fLocalFade);
-    	self:_ActivateOutput("FadeValue", self.fFadeValue);
-    end
-  end
+		do return end;
+	end
+	
+	if (self.Properties.fFadeDistance > 0.0) then
+		if (self.nState == 2) then
+			if (self.fFadeValue ~= fFade) then
+				self.fFadeValue = fFade;
+				self:_ActivateOutput("FadeValue", self.fFadeValue);
+			end
+		else
+			self.fFadeValue = fFade;
+			self:_ActivateOutput("FadeValue", self.fFadeValue);
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -159,18 +159,21 @@ AudioAreaEntity.Server={
 
 ----------------------------------------------------------------------------------------
 AudioAreaEntity.Client={
+	----------------------------------------------------------------------------------------
 	OnInit = function(self)
 		self:RegisterForAreaEvents(1);
 		self:_LookupObstructionSwitchIDs();
 		self:_SetObstruction();
 		self:CliSrv_OnInit();
 	end,
-  
+	
+	----------------------------------------------------------------------------------------
 	OnShutDown = function(self)
 		self.nState = 0;
     self:RegisterForAreaEvents(0);
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerEnterNearArea = function(self, player, nAreaID, fFade)
 		if (self.nState == 0) then
 			self:_ActivateOutput("OnFarToNear", true);
@@ -183,11 +186,13 @@ AudioAreaEntity.Client={
 		self:_ActivateOutput("FadeValue", self.fFadeValue);
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerMoveNearArea = function(self, player, areaId, fFade, fDistsq)
 		self.nState = 1;
 		self:UpdateFadeValue(player, fFade, fDistsq);
 	end,	
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerEnterArea = function(self, player, areaId, fFade)
     if (self.nState == 0) then
 			-- possible if the player is teleported or gets spawned inside the area
@@ -202,6 +207,7 @@ AudioAreaEntity.Client={
 		self:_DisableObstruction();
 	end,	
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerProceedFadeArea = function(self, player, areaId, fExternalFade)
 	  -- fExternalFade holds the fade value which was calculated by an inner, higher priority area
 	  -- in the AreaManager to fade out the outer sound dependent on the largest fade distance of all attached entities
@@ -213,12 +219,14 @@ AudioAreaEntity.Client={
 	  end
 	end,
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerLeaveArea = function(self, player, nAreaID, fFade)
 		self.nState = 1;
 		self:_ActivateOutput("OnInsideToNear", true);
 		self:_SetObstruction();
 	end,	
 	
+	----------------------------------------------------------------------------------------
 	OnAudioListenerLeaveNearArea = function(self, player, nAreaID, fFade)
 		self.nState = 0;
 		self.fFadeValue = 0.0;
@@ -226,8 +234,15 @@ AudioAreaEntity.Client={
 		self:_ActivateOutput("FadeValue", self.fFadeValue);
 	end,
 	
+	----------------------------------------------------------------------------------------
+	OnBindThis = function(self)
+		self:RegisterForAreaEvents(1);
+	end,
+	
+	----------------------------------------------------------------------------------------
 	OnUnBindThis = function(self)
 		self.nState = 0;
+		self:RegisterForAreaEvents(0);
 	end,
 }
 

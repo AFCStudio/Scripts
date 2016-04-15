@@ -1,4 +1,4 @@
-<Vehicle name="HMMWV" actionMap="">
+<Vehicle name="HMMWV">
 	<Physics pushable="0">
 		<Buoyancy waterDensity="50" waterResistance="3000" waterDamping="500"/>
 		<Simulation maxTimeStep="0.02" minEnergy="0.002" maxLoggedCollisions="2"/>
@@ -385,9 +385,9 @@
 		</Action>
 	</Actions>
 	<Seats>
-		<Seat name="driver" part="hull" enterInFirstPerson="1" enterHelper="passenger01_enter_pos" sitHelper="passenger01_seat_pos" isDriver="1" AimPart="" seatGroupIndex="1" agVehicleName="HMMWV" actionMap="vehicle_driver">
+		<Seat name="driver" enterInFirstPerson="1" enterHelper="passenger01_enter_pos" sitHelper="passenger01_seat_pos" isDriver="1" AimPart="" seatGroupIndex="1" actionMap="vehicle_driver">
 			<Views>
-				<View class="FirstPerson" canRotate="1" relaxTimeMax="0.1" rotationMin="-10,0,-60" rotationMax="10,0,60" hidePlayer="0" followSpeed="16">
+				<View class="FirstPerson" canRotate="1" relaxTimeMax="0.1" rotationMax="10,0,60" hidePlayer="0" followSpeed="16">
 					<FirstPerson offset="0,0,0" characterBone="Bip01 Camera" relativeToHorizon="0.0"/>
 				</View>
 				<View class="SteerThirdPerson">
@@ -575,7 +575,7 @@
 		<DamageEffects>
 			<DamageEffect name="VehicleDestroyed" helper="vehicleBurnPos" effect="Vehicles.HMMWV.Damage.Destroyed"/>
 			<DamageEffect name="Smoke" helper="vehicleBurnPos" effect="Vehicles.HMMWV.Damage.Smoke"/>
-			<DamageEffect name="BurnEngine" helper="vehicleBurnPos" effect="Vehicles.HMMWV.Damage.BurnEngine" scaleMax="0.1"/>
+			<DamageEffect name="BurnEngine" helper="vehicleBurnPos" effect="Vehicles.HMMWV.Damage.BurnEngine"/>
 			<DamageEffect name="SmokeFuelTank" helper="vehicleFuelTankBurnPos" effect="Vehicles.HMMWV.Damage.SmokeFuelTank"/>
 			<DamageEffect name="DestroyHeadLightLeft" helper="headLightLeft" effect="Vehicles.HMMWV.Damage.DestroyedHeadLight"/>
 			<DamageEffect name="DestroyHeadLightRight" helper="headLightRight" effect="Vehicles.HMMWV.Damage.DestroyedHeadLight"/>

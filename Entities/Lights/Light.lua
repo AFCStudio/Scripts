@@ -43,7 +43,7 @@ Light =
 		},
 		Shadows = 
 		{
-			nCastShadows = 0,
+			eiCastShadows = 0,
 			fShadowBias = 1, --[0,1000,1,"Moves the shadow cascade toward or away from the shadow-casting object."]
 			fShadowSlopeBias = 1, --[0,1000,1,"Allows you to adjust the gradient (slope-based) bias used to compute the shadow bias."]
 			fShadowResolutionScale = 1,
@@ -179,7 +179,7 @@ function Light:LoadLightToSlot( nSlot )
 	lt.volumetric_fog_only = Options.bAffectsVolumetricFogOnly;
 	lt.fog_radial_lobe = Options.fFogRadialLobe;
 
-	lt.cast_shadow = Shadows.nCastShadows;
+	lt.cast_shadow = Shadows.eiCastShadows;
 	lt.shadow_bias = Shadows.fShadowBias;
 	lt.shadow_slope_bias = Shadows.fShadowSlopeBias;
 	lt.shadowResolutionScale = Shadows.fShadowResolutionScale;

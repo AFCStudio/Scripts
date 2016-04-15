@@ -40,6 +40,28 @@
 		</MountedGun>
 	</PlayerRotation>
 
+	<PlayerRotation3rdPerson>
+		<Normal>
+			<Vertical angle_min="-50" angle_max="60" />
+		</Normal>
+		<Crouch>
+			<Vertical angle_min="-40" angle_max="50" />
+		</Crouch>
+		<Sliding>
+			<Horizontal angle_min="0" angle_max="100" />
+			<Vertical angle_min="0" angle_max="40" />
+		</Sliding>
+		<Sprinting>
+			<Vertical angle_min="-35" angle_max="45" />
+		</Sprinting>
+		<Swim>
+			<Vertical angle_min="-45" angle_max="80" />
+		</Swim>
+		<MountedGun>
+			<Vertical angle_min="-89" angle_max="60" />
+		</MountedGun>
+	</PlayerRotation3rdPerson>
+
 	<LandBob maxTime="0.6" maxBob="0.5" maxFallDist="3.0" />
 
 	<SwimmingParams>

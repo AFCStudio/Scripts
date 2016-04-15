@@ -8,7 +8,7 @@
 		<param name="reusable" value="1" />
 	</flags>
 	<whiz>
-		<param name="sound" value="sounds/physics_bullets:whizzes:shotgun_whiz" />
+		<param name="sound" value="Play_p_pro_flyby_bullet_close" />
 		<param name="distance" value="5.0" />
 	</whiz>
 	<physics type="particle">

@@ -1124,6 +1124,9 @@ function BasicActor:OnSpawn(bIsReload)
 	end
 
 	ApplyCollisionFiltering(self, GetCollisionFiltering(self));
+	
+	-- Create the Dynamic Response System proxy used by the dialog system
+	self:CreateDRSProxy();
 
 end
 
@@ -1172,7 +1175,7 @@ function BasicActor:ScriptEvent(event,value,str)
 	end
 end
 
-function BasicActor.Client:OnAnimationEvent(animation,strPar,intPar)
+function BasicActor.Client:OnAnimationEvent(type, eventData)
 
 	-- Function callback, if any
 	local onAnimationKey = self.onAnimationKey;
@@ -1180,7 +1183,7 @@ function BasicActor.Client:OnAnimationEvent(animation,strPar,intPar)
 	if (onAnimationKey) then
 		local func = onAnimationKey[strPar];
 		if (func) then
-			func(self, animation);
+			func(self, type, eventData);
 		end
 	end
 end

@@ -177,9 +177,9 @@
 		</Action>
 	</Actions>
 	<Seats>
-		<Seat name="driver" part="body" enterHelper="enter_left_pos" sitHelper="driver_steer_pos" exitHelper="exit_pos" isDriver="1" AimPart="" seatGroupIndex="1" actionMap="vehicle_driver">
+		<Seat name="driver" enterHelper="enter_left_pos" sitHelper="driver_steer_pos" exitHelper="exit_pos" isDriver="1" AimPart="" seatGroupIndex="1" actionMap="vehicle_driver">
 			<Views>
-				<View class="FirstPerson" canRotate="1" rotationMin="-50,0,-70" rotationMax="50,0,70">
+				<View class="FirstPerson" canRotate="1" rotationMax="50,0,70">
 					<FirstPerson offset="0,0,0.25" relativeToHorizon="0.5" />
 				</View>
 				<View class="SteerThirdPerson">
@@ -265,8 +265,8 @@
 			<DamageEffect name="rightEngineSmoke" helper="rightEngineSmokePos" effect="Vehicles.SpeedBoat.Damage.Engine_R"/>
 			<DamageEffect name="VehicleDestroyed" helper="" effect="Vehicles.SpeedBoat.Damage.Destroyed"/>
 			<DamageEffect name="VehicleFlipped" helper="centerPos" effect="Vehicles.SpeedBoat.Damage.Flipped"/>
-			<DamageEffect name="HullDamaged25" helper="vehicleBurnPos" effect="Vehicles.SpeedBoat.Damage.Hull_25" scaleMax="1" gravityDirection="0,0,0" pulsePeriod="0"/>
-			<DamageEffect name="HullDamaged75" helper="vehicleBurnPos" effect="Vehicles.SpeedBoat.Damage.Hull_75" scaleMax="1" gravityDirection="0,0,0" pulsePeriod="0"/>
+			<DamageEffect name="HullDamaged25" helper="vehicleBurnPos" effect="Vehicles.SpeedBoat.Damage.Hull_25" gravityDirection="0,0,0" pulsePeriod="0"/>
+			<DamageEffect name="HullDamaged75" helper="vehicleBurnPos" effect="Vehicles.SpeedBoat.Damage.Hull_75" gravityDirection="0,0,0" pulsePeriod="0"/>
 		</DamageEffects>
 		<EnvironmentLayers>
 			<EnvironmentLayer minSpeed="0.1" minSpeedSizeScale="1" minSpeedCountScale="1" minSpeedSpeedScale="1" maxSpeed="10" maxSpeedSizeScale="4"

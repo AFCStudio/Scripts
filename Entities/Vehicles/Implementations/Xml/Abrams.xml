@@ -334,6 +334,7 @@
 		<Helper name="centerPos" position="0,-1,1.1682" direction="0,1,0" part="body"/>
 		<Helper name="exhaustPos" position="-0.7,-4,1.1621" direction="0,-1,0" part="body"/>
 		<Helper name="engineSmokeOut" position="0.175,-4.1,1.25" direction="0,-1,-0.5" part="body"/>
+		<Helper name="cannonStart" position="0,3.8,1.9" direction="0,1,0" part="cannon"/>
 		<Helper name="cannonOut" position="0,5.8,1.9" direction="0,1,0" part="cannon"/>
 		<Helper name="coaxOut" position="0.315,2.4,2.035" direction="0,1,0" part="cannon"/>
 		<Helper name="turretPos" position="-0.0013,0.1204,1.584" direction="0,1,0" part="turret"/>
@@ -361,7 +362,7 @@
 		</Action>
 	</Actions>
 	<Seats>
-		<Seat name="driver" part="body" enterInFirstPerson="1" enterHelper="driver_enter_pos" sitHelper="driver_sit_pos" isDriver="1" isPassengerShielded="1" isPassengerHidden="1" AimPart="cannon_base" seatGroupIndex="1" actionMap="vehicle_driver" explosionShakeMult="0.2">
+		<Seat name="driver" enterInFirstPerson="1" enterHelper="driver_enter_pos" sitHelper="driver_sit_pos" isDriver="1" isPassengerShielded="1" isPassengerHidden="1" AimPart="cannon_base" seatGroupIndex="1" actionMap="vehicle_driver" explosionShakeMult="0.2">
 			<Views>
 				<View class="FirstPerson" canRotate="0">
 					<FirstPerson helper="driver_view_pos" frameObject="" frameObjectOffset=""/>
@@ -381,7 +382,7 @@
 							</Limits>
 						</Pitch>
 						<Yaw part="turret" speed="40" accel="0" worldSpace="0"/>
-						<RotationTest helper1="cannon_base" helper2="cannonOut" radius="0.25"/>
+						<RotationTest helper1="cannonStart" helper2="cannonOut" radius="0.25"/>
 					</RotateTurret>
 				</SeatAction>
 				<SeatAction class="Weapons">
@@ -446,7 +447,7 @@
 			</SeatActions>
 			<Sounds inout="0" mood="1"/>
 		</Seat>
-		<Seat name="gunner" part="body" enterHelper="gunner_enter_pos" sitHelper="gunner_sit_pos" isDriver="0" isPassengerShielded="1" isPassengerHidden="1" AimPart="turret" seatGroupIndex="2" actionMap="vehicle_driver">
+		<Seat name="gunner" enterHelper="gunner_enter_pos" sitHelper="gunner_sit_pos" isDriver="0" isPassengerShielded="1" isPassengerHidden="1" AimPart="turret" seatGroupIndex="2" actionMap="vehicle_driver">
 			<Views>
 				<View class="FirstPerson" canRotate="1" rotationMin="-15,0,-120" rotationMax="50,0,120">
 					<FirstPerson helper="gunner_view_pos" frameObject="" frameObjectOffset=""/>
@@ -666,9 +667,6 @@
 		<Paint name="green" material="objects/vehicles/abrams/m1a1_green.mtl"/>
 		<Paint name="stealth" material="objects/vehicles/abrams/m1a1_stealth.mtl"/>
 	</Paints>
-	<WheelMaster>
-		<SubPartWheel axle="0" density="100" damping="-0.3" driving="0" lenMax="0.4" maxFriction="1.2" minFriction="1.2" stiffness="0" suspLength="0.35" rayCast="0"/>
-	</WheelMaster>
 	<Modifications>
 		<Modification name="TuskA">
 			<Elems>
