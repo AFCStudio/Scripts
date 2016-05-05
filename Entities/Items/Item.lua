@@ -9,6 +9,8 @@ Item = {
 		soclasses_SmartObjectClass = "",
 		initialSetup = "",
 	},
+    
+    nCaptureType = 3,
 	
 	Client = {},
 	Server = {},
