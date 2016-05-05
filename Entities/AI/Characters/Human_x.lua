@@ -16,19 +16,19 @@ Human_x =
 	{
 		boneIDs =
 		{
-			BONE_BIP01 = "Bip01",
-			BONE_SPINE = "Bip01 Spine1",
-			BONE_SPINE2 = "Bip01 Spine2",
-			BONE_SPINE3 = "Bip01 Spine3",
-			BONE_HEAD = "Bip01 Head",
-			BONE_WEAPON = "weapon_bone",
-			BONE_WEAPON2 = "Lweapon_bone",
-			BONE_FOOT_R = "Bip01 R Foot",
-			BONE_FOOT_L = "Bip01 L Foot",
-			BONE_ARM_R = "Bip01 R Forearm",
-			BONE_ARM_L = "Bip01 L Forearm",
-			BONE_CALF_R = "Bip01 R Calf",
-			BONE_CALF_L = "Bip01 L Calf",
+            BONE_BIP01 = "Root",
+			BONE_SPINE = "spine.01",
+			BONE_SPINE2 = "spine.02",
+			BONE_SPINE3 = "spine_chest",
+			BONE_HEAD = "head",
+			BONE_WEAPON = "Weapon.R",
+			BONE_WEAPON2 = "Weapon.L",
+			BONE_FOOT_R = "foot.R",
+			BONE_FOOT_L = "foot.L",
+			BONE_ARM_R = "forearm.R",
+			BONE_ARM_L = "forearm.L",
+			BONE_CALF_R = "shin.R",
+			BONE_CALF_L = "shin.L",
 		},
 
 		meeleHitRagdollImpulseScale = 1.0, -- Scales melee impulse force (when being hit)
@@ -45,7 +45,7 @@ Human_x =
 		proceduralLeaningFactor = 0.0, -- disable procedural leaning by default for all humans (infected don't need it, and the others use turn assets)
 
 		canUseComplexLookIK = true,
-		lookAtSimpleHeadBone = "Bip01 Head",
+		lookAtSimpleHeadBone = "head",
 
 		cornerSmoother = 2, -- 1 = C2 method; 2 = C3 method
 
@@ -261,7 +261,7 @@ Human_x =
 		aicharacter_character = "",
 		esBehaviorSelection = "HumanGrunt",
 
-		fileModel = "objects/characters/human/sdk_player/sdk_player_red.cdf",
+		fileModel = "objects/characters/afc_ottomans/magician.cdf",
 		bUseFacialFrameRateLimiting = 1,
 		equip_EquipmentPack = "AI_Rifle",
 
