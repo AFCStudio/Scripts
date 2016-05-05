@@ -2,11 +2,13 @@ Script.ReloadScript( "SCRIPTS/Entities/actor/BasicActor.lua");
 
 Player = 
 {
-	AnimationGraph = "player.xml",
-	UpperBodyGraph = "",
-	ActionController = "Animations/Mannequin/ADB/playerControllerDefs.xml",
-	AnimDatabase3P = "Animations/Mannequin/ADB/playerAnims3P.adb",
-	AnimDatabase1P = "Animations/Mannequin/ADB/playerAnims1P.adb",
+	--AnimationGraph = "player.xml",
+	--UpperBodyGraph = "",
+	--ActionController = "Animations/Mannequin/ADB/playerControllerDefs.xml",
+	--AnimDatabase3P = "Animations/Mannequin/ADB/playerAnims3P.adb",
+	--AnimDatabase1P = "Animations/Mannequin/ADB/playerAnims1P.adb",
+    ActionController = "Animations/Mannequin/ADB/MagicianControllerDefs.xml",
+    AnimDatabase3P = "Animations/Mannequin/ADB/MagicianDataBase.adb",
 	SoundDatabase = "Animations/Mannequin/ADB/playerSounds.adb",
 
 	type = "Player",
@@ -46,9 +48,12 @@ Player =
 			sightrange = 50,
 		},
 
-		fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
-		shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
-		clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+		--fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+		--shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+		--clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
+        fileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
+        shadowFileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
+        clientFileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
 
 		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_PlayerSP.xml",
 	},
@@ -64,12 +69,12 @@ Player =
 		{
 			items =
 			{
-				{ name = "Zeus", equip = true },
+				{ name = "Sword", equip = true },
 			},
-			ammo =
-			{
-				{ name = "lightbullet", amount = 28},
-			},
+			--ammo =
+			--{
+				--{ name = "lightbullet", amount = 28},
+			--},
 		},
 
 		Damage =
@@ -84,7 +89,7 @@ Player =
 				maxSpeed = 4.0,
 				heightCollider = 1.25,
 				heightPivot = 0.0,
-				size = {x=0.41,y=0.41,z=0.3},
+				size = {x=0.3,y=0.3,z=0.3},
 				viewOffset = {x=0,y=0.065,z=1.65},
 				weaponOffset = {x=0.2,y=0.0,z=1.35},
 				viewDownYMod = 0.05,
@@ -102,7 +107,7 @@ Player =
 				maxSpeed = 1.5, -- See  Player:SetIsMultiplayer()  for MP value
 				heightCollider = 0.7,
 				heightPivot = 0,
-				size = {x=0.41,y=0.41,z=0.1},
+				size = {x=0.3,y=0.3,z=0.1},
 				viewOffset = {x=0,y=0.065,z=1.0},
 				weaponOffset = {x=0.2,y=0.0,z=0.85},
 				viewDownYMod = 0.05,
@@ -116,7 +121,7 @@ Player =
 				maxSpeed = 2.1,
 				heightCollider = 1.0,
 				heightPivot = 0,
-				size = {x=0.41,y=0.41,z=0.35},
+				size = {x=0.3,y=0.3,z=0.35},
 				viewOffset = {x=0,y=0.1,z=1.5},
 				modelOffset = {x=0,y=0,z=0.0},
 				weaponOffset = {x=0.3,y=0.0,z=0},
@@ -194,7 +199,7 @@ Player =
 -- Function called from C++ to set up multiplayer parameters
 function Player:SetIsMultiplayer()
 
-	self.Properties.Damage.health = 100;
+	self.Properties.Damage.health = 1000;
 	self.Properties.fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf";
 	self.Properties.shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf";
 	self.Properties.clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf";
