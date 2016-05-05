@@ -86,7 +86,7 @@ Player =
 		{
 			{
 				stanceId = STANCE_STAND,
-				maxSpeed = 4.0,
+				maxSpeed = 4.2,             -- 4.2
 				heightCollider = 1.25,
 				heightPivot = 0.0,
 				size = {x=0.3,y=0.3,z=0.3},
@@ -102,10 +102,23 @@ Player =
 				stanceId = -2, -- -2 is a magic number that gets ignored by CActor::SetupStance
 			},
             
-            -- AFC Stand Walk
+            {
+                stanceId = STANCE_STEALTH,
+                maxSpeed = 2.4,
+                heightCollider = 1.25,
+				heightPivot = 0.0,
+				size = {x=0.3,y=0.3,z=0.3},
+				viewOffset = {x=0,y=0.065,z=1.25},
+				weaponOffset = {x=0.2,y=0.0,z=1.35},
+				viewDownYMod = 0.05,
+				modelOffset = {x=0,y=0,z=0.0},
+				name = "stealth",
+				useCapsule = 1,
+            },
+            
             {
                 stanceId = STANCE_WALK,
-                maxSpeed = 1,
+                maxSpeed = 1.25,
                 heightCollider = 1.25,
 				heightPivot = 0.0,
 				size = {x=0.3,y=0.3,z=0.3},
@@ -120,13 +133,13 @@ Player =
 			{
 				stanceId = STANCE_CROUCH,
 				maxSpeed = 1.5, -- See  Player:SetIsMultiplayer()  for MP value
-				heightCollider = 0.7,
-				heightPivot = 0,
-				size = {x=0.3,y=0.3,z=0.1},
-				viewOffset = {x=0,y=0.065,z=1.0},
-				weaponOffset = {x=0.2,y=0.0,z=0.85},
+                heightCollider = 1.25,
+				heightPivot = 0.0,
+				size = {x=0.3,y=0.3,z=0.3},
+				viewOffset = {x=0,y=0.065,z=1.25},
+				weaponOffset = {x=0.2,y=0.0,z=1.35},
 				viewDownYMod = 0.05,
-				modelOffset = {x=0,y=0,z=0},
+				modelOffset = {x=0,y=0,z=0.0},
 				name = "crouch",
 				useCapsule = 1,
 			},
@@ -143,6 +156,19 @@ Player =
 				name = "swim",
 				useCapsule = 1,
 			},
+            
+            {
+                stanceId = STANCE_LEDGE,
+                maxSpeed = 2.1,
+                heightCollider = 0.7,
+                heightPivot = 0,
+                size = {x=0.1,y=0.1,z=0.1},
+                viewOffset = {x=0.0,y=1.0,z=1.6},
+                modelOffset = {x=0,y=0,z=0.0},
+                weaponOffset = {x=0.3,y=0.0,z=0},
+                name = "ledge",
+                useCapsule = 1,
+            },
 
 			{
 				stanceId = -2, -- -2 is a magic number that gets ignored by CActor::SetupStance
