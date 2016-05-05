@@ -74,7 +74,7 @@ BasicActor =
 			"rightArm",
 			"leftArm",
 		},
-
+    -- AFC IK Investigation
 		useIKRotation = 0,
 	},
 
@@ -391,7 +391,7 @@ function BasicActor:GetBloodFlowPosition()
 end
 
 function BasicActor:GetBloodFlowBone()
-	return "Bip01 Spine2";
+	return "spine_chest";      -- AFC Code Edited
 end
 
 function BasicActor:WallBloodSplat(hit, killingHit)

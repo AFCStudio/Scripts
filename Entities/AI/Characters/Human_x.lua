@@ -5,9 +5,21 @@ Human_x =
 	--AnimationGraph = "humanfullbody.xml",
 	--UpperBodyGraph = "humanupperbody.xml",
 
-	ActionController = "Animations/Mannequin/ADB/humanControllerDefs.xml",
-	AnimDatabase3P = "Animations/Mannequin/ADB/human.adb",
+	--ActionController = "Animations/Mannequin/ADB/humanControllerDefs.xml",
+	--AnimDatabase3P = "Animations/Mannequin/ADB/human.adb",
+    
+    ActionController = "Animations/Mannequin/ADB/AIControllerDefs.xml",
+	AnimDatabase3P = "Animations/Mannequin/ADB/AIDataBase.adb",
 	SoundDatabase = "Animations/Mannequin/ADB/humanSounds.adb",
+    
+    -- AFC Variables -----------------
+    nCaptureType = 1,
+    bIsRunning = 0,
+    fSumTime = 0,                   
+    vDir = { x=0, y=0, z=0, },
+    luaActive = 0,
+    fRyseTime = 1.833,
+    -- End -----------------------------
 
 	UseMannequinAGState = true,
 	UseLegacyCoverLocator = false,
@@ -70,7 +82,7 @@ Human_x =
 				maxSpeed = 50.0,
 				heightCollider = 1.2,
 				heightPivot = 0.0,
-				size = {x=0.5,y=0.5,z=0.2},
+				size = {x=0.3,y=0.3,z=0.2},
 				modelOffset = {x=0,y=-0.0,z=0},
 				viewOffset = {x=0,y=0.10,z=1.625},
 				weaponOffset = {x=0.2,y=0.0,z=1.35},
@@ -89,7 +101,7 @@ Human_x =
 				maxSpeed = 50.0,
 				heightCollider = 1.2,
 				heightPivot = 0.0,
-				size = {x=0.5,y=0.5,z=0.2},
+				size = {x=0.3,y=0.3,z=0.2},
 				modelOffset = {x=0,y=-0.0,z=0},
 				viewOffset = {x=0,y=0.10,z=1.625},
 				weaponOffset = {x=0.2,y=0.0,z=1.35},
@@ -108,7 +120,7 @@ Human_x =
 				maxSpeed = 50.0,
 				heightCollider = 0.8,
 				heightPivot = 0.0,
-				size = {x=0.5,y=0.5,z=0.1},
+				size = {x=0.3,y=0.3,z=0.1},
 				modelOffset = {x=0.0,y=0.0,z=0},
 				viewOffset = {x=0,y=0.0,z=0.9},
 				weaponOffset = {x=0.2,y=0.0,z=0.85},
@@ -127,7 +139,7 @@ Human_x =
 				maxSpeed = 50.0,
 				heightCollider = 0.8,
 				heightPivot = 0.0,
-				size = {x=0.5,y=0.5,z=0.1},
+				size = {x=0.3,y=0.3,z=0.1},
 				modelOffset = {x=0.0,y=0.0,z=0},
 				viewOffset = {x=0,y=0.0,z=0.9},
 				weaponOffset = {x=0.2,y=0.0,z=0.85},
@@ -153,7 +165,7 @@ Human_x =
 				maxSpeed = 50.0,
 				heightCollider = 1.2,
 				heightPivot = 0.0,
-				size = {x=0.5,y=0.5,z=0.2},
+				size = {x=0.3,y=0.3,z=0.2},
 				modelOffset = {x=0,y=-0.0,z=0},
 				viewOffset = {x=0,y=0.10,z=1.625},
 				weaponOffset = {x=0.2,y=0.0,z=1.35},
@@ -180,7 +192,7 @@ Human_x =
 				maxSpeed = 50.0, -- this is ignored, overridden by pl_swim* cvars.
 				heightCollider = 0.9,
 				heightPivot = 0.5,
-				size = {x=0.5,y=0.5,z=0.1},
+				size = {x=0.3,y=0.3,z=0.1},
 				modelOffset = {x=0,y=0,z=0.0},
 				viewOffset = {x=0,y=0.1,z=0.5},
 				weaponOffset = {x=0.2,y=0.0,z=0.3},
@@ -196,7 +208,7 @@ Human_x =
 				maxSpeed = 50.0,
 				heightCollider = 1.2,
 				heightPivot = 0.0,
-				size = {x=0.5,y=0.5,z=0.2},
+				size = {x=0.3,y=0.3,z=0.2},
 				modelOffset = {x=0,y=0,z=0},
 				viewOffset = {x=0,y=0.10,z=1.625},
 				weaponOffset = {x=0.2,y=0.0,z=1.3},
@@ -217,12 +229,16 @@ Human_x =
 	Properties =
 	{
 		TagList = "", -- CryMannequin tags for this entity, separated by '+'
+        
+        bIsMagician = false,        -- AFC Tech
+        bActive = 0,
+        fRyseTime = 1.833,
 
 		soclasses_SmartObjectClass = "Human, Actor",
 
 		esModularBehaviorTree = "SDK_Grunt_07",
 		esNavigationType = "MediumSizedCharacters",
-		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_SDKGrunt.xml",
+		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_AI_AFC.xml",
 
 		esVoice = "AI_01",
 		esCommConfig = "Human",
@@ -231,7 +247,7 @@ Human_x =
 
 		Damage =
 		{
-			health = 500,
+			health = 100,
 			fileBodyDamage = "Libs/BodyDamage/BodyDamage_Default.xml",
 			fileBodyDamageParts = "Libs/BodyDamage/Bodyparts_HumanMaleShared.xml",
 			fileBodyDestructibility = "Libs/BodyDamage/BodyDestructibility_HumanMaleShared.xml",
@@ -408,13 +424,13 @@ Human_x =
 
 	melee =
 	{
-		damage = 400,
+		damage = 10,
 		damageOffset = {x=0, y=2, z=0};
 		damageRadius = 1.8,
 		damageRadiusShort = 1.5,
-		hitRange = 1.8,
+		hitRange = 2.0,
 		knockdownChance = 0.1,
-		impulse = 600,
+		impulse = 1,
 		angleThreshold = 180,
 	},
 
@@ -747,6 +763,9 @@ mergef(Human_x, AIBase, 1)
 -----------------------------------------------------------------------------------------------------
 function Human_x:OnResetCustom()
 
+    self.luaActive = self.Properties.bActive ;          -- AFC Code
+    self.fRyseTime = self.Properties.fRyseTime ;        -- AFC Code
+
 	GameAI.UnregisterWithAllModules(self.id)
 	AI.SetPostures(self.id, HumanPostures)
 
@@ -761,8 +780,8 @@ function Human_x:OnResetCustom()
 	GameAI.RegisterWithModule("BattleFront", self.id)
 	GameAI.RegisterWithModule("StalkerModule", self.id) -- TODO: Rename StalkerModule to something else since it's used to see if the target can see me
 	GameAI.RegisterWithModule("RangeModule", self.id)
-	GameAI.AddRange(self.id, 2.5, "OnTargetEnteredMeleeRange", "")
-	GameAI.AddRange(self.id, 3, "", "OnTargetLeftMeleeRange")
+	GameAI.AddRange(self.id, 3.0, "OnTargetEnteredMeleeRange", "")  -- AFC Edited   Melee Range Signal in Behavior Tree Node
+	GameAI.AddRange(self.id, 4.0, "", "OnTargetLeftMeleeRange")     -- AFC Edited
 	GameAI.AddRange(self.id, self.gameParams.nearbyRange, "OnTargetEnteredNearbyRange", "OnTargetLeftNearbyRange")
 	GameAI.AddRange(self.id, self.gameParams.middleRange, "OnTargetEnteredMiddleRange", "OnTargetEnteredMiddleRange")
 	
