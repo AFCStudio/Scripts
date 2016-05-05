@@ -1,0 +1,216 @@
+<!-- Basic weapon script: "Rifle" -->
+<!-- This script sample demostrates how to create a basic weapon which can fire single shots, reload and zoom in/out -->
+
+<!-- GENERAL IDEAS/CONCEPTS: -->
+<!-- 1) These scripts can be seen like kind of a database, that stores certain information and parameters. -->
+<!--	According to the data decription provided within these files, the system will instantiate some C++ objects -->
+<!--	and will fill some member data structures (FX, sound, animations, recoil parameters...)-->
+
+<!-- 2) The first line of the script <item ...> contains the name of our item (unique), and its class. There are several classes supported: -->
+<!--	Item, Weapon, VehicleWeapon, GunTurret, LAM ... all of them registed in GameDLL, GameFactory.cpp. -->
+<!--	We can add new C++ derived classes from IItem interface and register them to create some new weapon, items, accessories, ... -->
+
+<!-- 3) Derivated classes inherit all the params from parent classes. -->
+<!--	Some common data blocks like <geometry>, or <params> are defined in the base class Item; while derivated classes-->
+<!--	like Weapon can add new blocks, e.g. <ammos> -->
+
+<!-- 4) Items support accessories, that can be attached to them. See <accessories> block covered in this example -->
+
+<!-- 5) Weapons: Fire modes and zoom modes -->
+<!--	Fire modes: A weapon can have one or more of these ones. For every entry in the script, the weapon will instantiate a C++ object for that firemode-->
+<!--	Supported fire mode types are registered in WeaponSystem.cpp. Types as Single, Automatic, Rapid, Burst... are available. -->
+<!--	If you need a new one, you can create a new class which implements IFireMode interface, and register it in the weapon sytem -->
+<!--	Zoom modes: Similar to fire modes, but in this case they need to implement IZoomMode interface. Ironsight and Scope are supported at the moment -->
+
+
+<!-- The first line is where we give our item a name, and specifies its class, Weapon -->
+<!-- Other params like category or priority in this case, although not needed, are for inventory management -->
+<item name="Sword_East_Roman_01" class="WeaponMagicianSword" category="primary" priority="12" weaponParams="1">
+
+	<!-- Params block: Define some common item parameters -->
+	<!-- Here we list some of them, there are many others. When a value is not initialized here, it will get internally a default value -->
+	<params>
+		<param name="display_name" value="MagicianSword" />
+		<param name="giveable" value="1" /> <!-- Indicates whether the item can be bought/picked up, "given" to the player -->
+		<param name="selectable" value="1" /> <!-- Indicates whether the item can be selected in the player's inventory -->
+		<param name="select_override" value="0.8" GAME="MP" />
+		<param name="pose" value="Sword" /> <!-- Sets the pose the player model will use when holding the item -->
+		<param name="slidePose" value="Sword" /> <!-- Sets the pose the player model will use when holding the item during a slide -->
+		<param name="itemClass" value="Sword" />
+		<param name="suffix" value="shoulder" />
+		<param name="mass" value="3" /> <!-- The weight of the item, in kg, and how much it will slow the player down when held -->
+		<param name="melee_attack_firemode" value="melee" /> <!-- The name of the firemode that is used for melee combat while holding the weapon -->
+		<param name="select_delayed_grab_3P" value="1" />
+		<param name="attach_to_back" value="1" /> <!-- Visually attaches the weapon to the players back in 3rd person view, when unselected -->
+		<param name="bone_attachment_01" value="stow_primary1" />
+		<param name="bone_attachment_02" value="stow_primary2" />
+		<!-- Action Delays -->
+		<param name="sprintToFireDelay" value="0.1" /> <!-- Time delay to prevent player from firing after sprinting stopped -->
+		<param name="sprintToZoomDelay" value="0.3" /> <!-- Time delay to prevent player from zoom after sprinting stopped -->
+		<param name="autoReloadDelay" value="0.5"  /> <!-- Time delay to automatically reload weapon on empty magazine -->
+		<param name="runToSprintBlendTime" value="0.3" />
+		<param name="sprintToRunBlendTime" value="0.4" />
+		<!-- WEAPON STATS (for UI display) -->
+		<param name="stat_accuracy" value="6" />
+		<param name="stat_rate_of_fire" value="7"/>
+		<param name="stat_mobility" value="5"/>
+		<param name="stat_damage" value="4"/>
+		<param name="stat_range" value="5" />
+		<param name="stat_recoil" value="5" GAME="MP" />
+		<param name="tag" value="SDKSword" />
+		<!--<param name="adb" value="rifleWeaponAnims.adb" />
+		<animPrecache name="Rifle" >
+			<precache DBAFile="animations/weapons/rifle/rifle.dba" thirdperson="0"/>
+			<precache DBAFile="animations/human/male/weapons/rifle/rifle_1p.dba" thirdperson="0"/>
+			<precache DBAFile="animations/human/male/weapons/rifle/rifle_3p.dba" thirdperson="1"/>
+		</animPrecache>-->
+		<aimAnims>
+			<param name="base" value="stand_tac_idlePose_rifle_shoulder_1p_01" />
+			<param name="idle" value="Sword_Idle01" />
+			<param name="run" value="stand_tac_run_proc_rifle_shoulder_add_1p_01" />
+			<param name="sprint" value="stand_tac_sprint_rifle_fwd_add_1p_01" />
+		</aimAnims>
+		<aimLookParams>
+			<param name="fp_offset" value="0.015,-0.0,-0.03" />
+			<param name="fp_rot_offset" value="0.0,-0.2,-0.5" />
+			<param name="look_offset" value="1.5,1.5" />
+			<param name="horiz_look_rot" value="0.0,-10.0,0.0" />
+			<param name="vert_look_rot" value="5.0,0.0,0.0" />
+			<param name="strafe_offset" value="1.0, 1.0, 0.5" />
+			<param name="side_strafe_rot" value="0.0, 6.0, 0.0" />
+			<param name="front_strafe_rot" value="1.75, 0.0, 0.0" />
+			<param name="bump_time" value="0.7" />
+			<param name="bump_shift" value="0.03" />
+			<param name="bump_rotation" value="3.0" />
+			<param name="idle_speed" value="1.0" />
+			<param name="idle_magnitude" value="1.0" />
+			<param name="run_speed" value="1.0" />
+			<param name="run_magnitude" value="1.0" />
+			<param name="sprint_speed" value="1.0" />
+			<param name="sprint_magnitude" value="1.0" />
+		</aimLookParams>
+		<procedualActions>
+			<param name="lower_offset" value="0, 0, 0" />
+			<param name="lower_rot_offset" value="-5.729577951, 2.864788976, 2.864788976" />
+			<param name="lower_transition" value="0.3" />
+			<param name="cine_offset" value="0.121500, 0.048518, 0.046515" />
+			<param name="cine_rot_offset" value="-24.394308381, -9.239402813, 54.954788554" />?
+			<param name="cine_transition" value="0.65" />
+			<param name="left_hand_modifier_offset" value="0.027467, 0.016173, -0.106616" />
+			<param name="left_hand_modifier_rot_offset" value="2.191063, -2.484817, 8.351659" />
+			<param name="modifiy_menu_offset" value="0.034076, 0.181064, -0.007974" />
+			<param name="modifiy_menu_rot_offset" value="35.124547377, 29.92042902, 55.013975094" />
+			<param name="modifiy_menu_left_offset" value="-0.05, -0.2, -0.5" />
+		</procedualActions>
+	</params>
+
+	<MovementModifiers speedScale="1.0" rotationScale="1.0" GAME="SP"> <!-- Base movement scale SP -->
+		<Ironsight speedScale="0.6" rotationScale="0.33" mouseRotationScale="0.9" /> <!-- Altered movement scale when ironsight -->
+	</MovementModifiers>
+	<MovementModifiers speedScale="1.0" rotationScale="1.0" firingSpeedScale="1.0" GAME="MP">
+		<Ironsight speedScale="0.6" rotationScale="0.33" mouseRotationScale="0.9" />
+	</MovementModifiers>
+
+	<ReloadMagazineParams magazineAttachment="magazine" magazineEvent="magazine" />
+
+	<ai_descriptor handler="instant" draw_time="2" burstBulletCountMin="5" burstBulletCountMax="9" burstPauseTimeMin="0.4" burstPauseTimeMax="0.9" singleFireTriggerTime="-1" pressureMultiplier="1" coverFireTime="3.0" />
+
+	<!-- An item is an entity, and entities give as several slots to store among other things our weapon models
+		 The most common used slots are firstperson and thirdperson, although there are others and we can add new ones.
+		(See Item.h, eGeometrySlot. And ItemParams.cpp, CItem::TargetToSlot(const char *slot)) -->
+	<geometry>
+		<!-- In this case we load our animated first person weapon in the firstperson slot and an static mesh in the thirdperson one (for third person view, or pickups) -->
+		<firstperson name="Objects/weapons/swords/east_roman_sword_01.cgf" angles="0,0,0" position="0,0,0" />
+		<thirdperson name="Objects/weapons/swords/east_roman_sword_01.cgf" angles="0,0,0" useStreaming="0" GAME="MP"/>
+		<thirdperson name="Objects/weapons/swords/east_roman_sword_01.cgf" angles="0,0,0" GAME="SP"/>
+	</geometry>
+
+	<!-- Fire modes: -->
+	<!-- One or more fire modes are supported. For each one we create a block <firemode>. In order to prevent redundancy, we can create a firemode of type "default".
+		 In this case probably is not needed, but imagine a semi-automatic weapon which can shoot single shots or fully automatic.
+		 You could add your common params, like ammo_type, damage, reload_time... inside the default block. Then you create 2 firemodes, Single and Automatic which can overwrite some of this params.
+		 In our example weapon, I add several blocks of params to the default section. Then I create a firemode of type single that will inherit all the default values, overwrite some of them, and add new ones like the tracers
+		 As explained before, this data will fill some C++ member structures, within the fire mode object. The amount and variety of info that could be added here, it's out of the scope of this example.
+		 For more details go to the Fire Modes source code folder inside GameDLL, and take a look at the code -->
+	<firemodes>
+		<firemode name="Melee" type="Melee">
+			<melee>
+				<param name="helper" value="collision" />
+				<param name="offset" value="0.35" />
+				<param name="damage" value="30" />
+				<param name="slide_damage" value="1" />
+				<param name="damage_AI" value="30" />
+				<param name="impulse" value="1"/>
+				<param name="impulse_actor" value="1" />
+				<param name="impulse_AI_to_Player" value="0.1"/>
+				<param name="impulse_vehicle" value="0.1"/>
+				<param name="impulse_up_percentage" value="1" />
+				<param name="range" value="0.8" />
+				<param name="delay" value="0.2" />
+				<param name="aiDelay" value="0.2" />
+				<param name="duration" value="1.7" />
+				<param name="knockdown_chance" value="2" />
+                <!--<param name="tag" value="meleeHit" />-->
+                <param name="is_melee_weapon" value="1" />
+                <param name="weapon_restore_delay" value="1.0" />
+				<param name="use_melee_weapon_delay" value="0.4" />
+				<PowerAttack>
+					<param name="duration" value="1" />
+				</PowerAttack>
+				<CloseAttack>
+					<param name="delay" value="0.2" />
+					<param name="duration" value="1.7" />
+					<param name="range" value="0.4" />
+					<param name="impulse_AI_to_Player" value="4"/>
+				</CloseAttack>
+			</melee>
+		</firemode>
+	</firemodes>
+
+
+	<!-- Accessories -->
+	<!-- An accessory must be another item registered in the system -->
+	<accessories>
+		<initialsetup>
+			<!--<accessory name="Silencer" GAME="SP" />-->
+		</initialsetup>
+		<accessory name="Silencer" category="barrel" exclusive="1" >
+			<attach helper="silencer_attach" /> <!-- Helper position for accessory attachment -->
+			<detach />
+			<params>
+				<firemodes>
+					<firemode type="Default">
+						<muzzleflash>
+							<firstperson effect="" helper="muzzleflash_effect" /> <!-- Disable PFX when using silencer -->
+							<thirdperson effect="" helper="weapon_term" />
+						</muzzleflash>
+					</firemode>
+					<firemode type="Single">
+						<fire>
+							<param name="is_silenced" value="1" />
+							<param name="damage_drop_per_meter" value="3.0" GAME="SP" />
+							<param name="damage_drop_per_meter" value="0.75" GAME="MP" />
+							<param name="damage_drop_min_distance" value="10" GAME="SP" />
+							<param name="damage_drop_min_distance" value="25" GAME="MP" />
+							<param name="damage_drop_min_damage" value="50" GAME="SP"/>
+							<param name="damage_drop_min_damage" value="18" GAME="MP"/>
+						</fire>
+					</firemode>
+					<firemode type="Rapid">
+						<fire>
+							<param name="is_silenced" value="1" />
+							<param name="damage_drop_per_meter" value="3.0" GAME="SP" />
+							<param name="damage_drop_per_meter" value="0.75" GAME="MP" />
+							<param name="damage_drop_min_distance" value="10" GAME="SP" />
+							<param name="damage_drop_min_distance" value="15" GAME="MP" />
+							<param name="damage_drop_min_damage" value="40" GAME="SP"/>
+							<param name="damage_drop_min_damage" value="15" GAME="MP"/>
+						</fire>
+					</firemode>
+				</firemodes>
+			</params>
+			<stats_changes stat_damage="-2" GAME="SP"/> <!-- Alter stats defined at the beginning of the script, based on accessory use -->
+			<stats_changes stat_damage="-2" stat_range="-2" GAME="MP"/>
+		</accessory>
+	</accessories>
+</item>
