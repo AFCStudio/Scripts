@@ -117,6 +117,20 @@ Player =
             },
             
             {
+                stanceId = STANCE_AIMING,
+                maxSpeed = 1.4,
+                heightCollider = 1.25,
+				heightPivot = 0.0,
+				size = {x=0.3,y=0.3,z=0.3},
+				viewOffset = {x=0,y=-1.0,z=1.25},
+				weaponOffset = {x=0.2,y=0.0,z=1.35},
+				viewDownYMod = 0.05,
+				modelOffset = {x=0,y=0,z=0.0},
+				name = "aiming",
+				useCapsule = 1,
+            },
+            
+            {
                 stanceId = STANCE_WALK,
                 maxSpeed = 1.25,
                 heightCollider = 1.25,
