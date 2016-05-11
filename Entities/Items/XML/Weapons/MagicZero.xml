@@ -156,6 +156,7 @@
 		<firemode type="default">
 			<!-- Some common fire params: ammo type, fire rate, damage of the ammo -->
 			<fire>
+                <param name="magicDelay" value="0.5" />
 				<param name="hit_type" value="MagicBall" /> <!-- Name of the hit type. This is used to set damage done to vehicles in vehicle XMLs -->
 				<param name="ammo_type" value="MagicBall" /> <!-- Type of bullet the weapon will fire -->
 				<param name="rate" value="700" /> <!-- Rate of fire for the weapon (bullets fired per minute) -->
@@ -164,7 +165,6 @@
 				<param name="ai_vs_player_damage" value="180"/> <!-- How much additional damage to apply from secondary_damage function -->
 				<param name="bullet_chamber" value="1" /> <!-- Indicates whether the weapon has a bullet in the bullet chamber after reload (basically an extra bullet) -->
 				<param name="clip_size" value="1" /> <!-- Maximum amount of bullets a magazine for this weapon can carry -->
-                <param name="latency" value="0.546" /> <!-- AFC Tech Latency parameter -->
 				<param name="lowAmmoWarningFraction" value="0.26"/>
 				<param name="fillAmmoReloadFraction" value="0.60" />
 				<param name="endReloadFraction" value="0.90" />
@@ -293,7 +293,7 @@
 		</firemode>
 
 		<!-- Settings defined here will override settings made in "default" section above. Name and type don't have to be the same -->
-		<firemode name="Single" type="Single">
+		<firemode name="Magic" type="Magic">
             <bow>
                 <param name="chargeTime" value="2.0" />
                 <param name="minChargePercent" value="0.2" />
@@ -355,36 +355,6 @@
 			</spread>
 			<stats_changes stat_accuracy="1" stat_mobility="0" stat_damage="1" stat_rate_of_fire="-2" GAME="SP"/>  <!-- Alter stats defined at the beginning of the script, based on firemode -->
 			<stats_changes stat_accuracy="1" stat_mobility="0" stat_damage="1" stat_rate_of_fire="-2" GAME="MP"/>
-		</firemode>
-
-		<firemode name="melee" type="Melee">
-			<melee>
-				<param name="helper" value="collision" />
-				<param name="offset" value="0.35" />
-				<param name="damage" value="300" />
-				<param name="slide_damage" value="300"/>
-				<param name="damage_AI" value="250" />
-				<param name="impulse" value="0"/>
-				<param name="impulse_actor" value="0" />
-				<param name="impulse_AI_to_Player" value="0"/>
-				<param name="impulse_vehicle" value="0"/>
-				<param name="impulse_up_percentage" value="0.4"/>
-				<param name="range" value="0.4" />
-				<param name="delay" value="0.4" />
-				<param name="aiDelay" value="0.4" />
-				<param name="duration" value="1" />
-				<param name="knockdown_chance" value="20" />
-				<param name="use_melee_weapon_delay" value="0.0" />
-				<PowerAttack>
-					<param name="duration" value="1"/>
-				</PowerAttack>
-				<CloseAttack>
-					<param name="delay" value="0.4" />
-					<param name="duration" value="1" />
-					<param name="range" value="0.4" />
-					<param name="impulse_AI_to_Player" value="0"/>
-				</CloseAttack>
-			</melee>
 		</firemode>
 	</firemodes>
 

@@ -104,7 +104,7 @@ Player =
             
             {
                 stanceId = STANCE_STEALTH,
-                maxSpeed = 2.4,
+                maxSpeed = 1.55,
                 heightCollider = 1.25,
 				heightPivot = 0.0,
 				size = {x=0.3,y=0.3,z=0.3},
