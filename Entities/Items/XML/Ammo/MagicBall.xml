@@ -38,7 +38,7 @@
 		<param name="friendly_fire" value="team" GAME="SP"/>
 	</explosion>
 	<params>
-		<param name="lifetime" value="3" />
+		<param name="lifetime" value="2" />
 		<param name="showtime" value="0.0" />
         <param name="lightDiffuse" value="1.0" />
         <param name="lightColor" value="99, 194, 175" />
