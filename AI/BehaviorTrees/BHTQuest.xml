@@ -1,0 +1,123 @@
+<BehaviorTree>
+
+	<Root>
+
+		<StateMachine>
+
+			<!--
+			=================================================
+					Idle
+			=================================================
+			-->
+
+			<State name="Idle">
+
+				<Transitions>
+					<Transition to="Move" onEvent="OnEnemySeen"/>
+					<Transition to="Move" onEvent="GroupMemberEnteredCombat"/>
+				</Transitions>
+
+				<BehaviorTree>
+
+					<Sequence>
+                        <Log message=" I AM IDLE!!" />
+						<SetAlertness value="0"/>
+
+						<Stance name="Relaxed"/>
+
+						<Move to="InitialPosition" speed="Walk" stance="Relaxed"/>
+
+						<ExecuteLua code="entity.actor:HolsterItem(true)"/>
+
+						<Animate name="ZZ_AI_idleBreak"/>
+
+						<Halt/>
+
+					</Sequence>
+
+				</BehaviorTree>
+
+			</State>
+			
+			<!--
+			=================================================
+					Move
+			=================================================
+			-->
+			
+			<State name="Move">
+				<Transitions>
+                <Transition to="Combat" onEvent="OnTargetEnteredMeleeRange" />
+                <Transition to="Idle" onEvent="OnTargetDead" />
+				</Transitions>
+				
+				<BehaviorTree>
+                
+					<Sequence>                   
+						<Log message="Now I am fiht with you..." />                        
+                        <SetAlertness value="1"/>
+						<Stance name="Alerted"/>                                           
+						<ExecuteLua code="entity:SelectPrimaryWeapon()" />
+                        <Communicate name="TargetSpottedWhileSearching" channel="Reaction" expirity="1.0" waitUntilFinished="0" />
+						
+						<SuppressFailure>
+						<Move speed ="Run" to="Target" stopWithinDistance="4.0" strafe="true" avoidGroupMates="true" avoidDangers="true"/>
+                       </SuppressFailure>
+					    <SendTransitionSignal name="OnTargetEnteredMeleeRange"/>
+						
+					</Sequence>
+					
+				</BehaviorTree>
+				
+			</State>
+
+			<!--
+			=================================================
+					Combat
+			=================================================
+			-->
+
+			<State name="Combat">
+
+				<Transitions>					                  
+                    <Transition to="Idle" onEvent="OnTargetDead" />    
+					<Transition to="Move" onEvent="OnTargetLeftMeleeRange" />					
+				</Transitions>
+
+				<BehaviorTree>
+					<Sequence>
+					
+						<Log message="Combat time!!!!" />
+						<Loop>
+							<Selector>
+								<GroupScope name="AttackScope" allowedConcurrentUsers="1">
+									<Sequence>
+										<Log message="Attacckk!" />
+										<SuppressFailure>
+										<Move speed ="Run" to="Target" stopWithinDistance="2.0" strafe="true" avoidGroupMates="true" avoidDangers="true"/>
+										</SuppressFailure>
+										<Melee target="AttentionTarget" cylinderRadius="2" snapDistance="4" />										
+									</Sequence>
+								</GroupScope>
+                
+								<Sequence>
+									<Log message="I am wait for attack!!!!" />
+									<Wait duration="2"/>
+								</Sequence>
+								
+								
+                
+							</Selector>	
+								
+							
+						</Loop>
+					</Sequence>
+				</BehaviorTree>
+
+			</State>
+
+		</StateMachine>
+
+	</Root>
+
+</BehaviorTree>
