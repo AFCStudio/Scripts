@@ -9,7 +9,7 @@
   <ActorImpulses>
 		<DeathImpulses maxRagdollImpulse="1000">
 			<!-- melee -->
-			<ImpulseSet hitTypes="melee" angularImpulseScale="0.0" partIDs="Bip01 Head">
+			<ImpulseSet hitTypes="melee" angularImpulseScale="0.0" partIDs="head">
 				<Impulse 
 					direction="0, 0, 1" 
 					partID="-1"
@@ -25,7 +25,7 @@
 			</ImpulseSet>
 
 			<!-- shotgun -->			
-			<ImpulseSet bulletTypes="1" partIDs="Bip01 Head">
+			<ImpulseSet bulletTypes="1" partIDs="head">
 				<Impulse 
 					direction="0, 0, 1" 
 					strength="500"
@@ -42,12 +42,12 @@
 					useDirection="1"
 					direction="1, 1, 1" 
 					strength="150"
-					partID="Bip01 Head"
+					partID="head"
 					/>					
 			</ImpulseSet>
 
 			<!-- assault / light bullet -->			
-			<ImpulseSet bulletTypes="2" partIDs="Bip01 Head">
+			<ImpulseSet bulletTypes="2" partIDs="head">
 				<Impulse 
 					direction="0, 0, 1" 
 					strength="40"
@@ -57,12 +57,12 @@
 					useDirection="1"
 					direction="1, 1, 1" 
 					strength="75"
-					partID="Bip01 Head"
+					partID="head"
 					/>					
 			</ImpulseSet>
 
 			<!-- Sniper and Hurricane -->			
-			<ImpulseSet bulletTypes="3,4" partIDs="Bip01 Head">
+			<ImpulseSet bulletTypes="3,4" partIDs="head">
 				<Impulse 
 					direction="0, 0, 1" 
 					strength="40"
@@ -72,12 +72,12 @@
 					useDirection="1"
 					direction="1, 1, 1" 
 					strength="100"
-					partID="Bip01 Head"
+					partID="head"
 					/>					
 			</ImpulseSet>
 
 			<!-- Gauss -->			
-			<ImpulseSet bulletTypes="5" partIDs="Bip01 Head">
+			<ImpulseSet bulletTypes="5" partIDs="head">
 				<Impulse 
 					direction="0, 0, 1" 
 					strength="150"
@@ -87,7 +87,7 @@
 					useDirection="1"
 					direction="1, 1, 1" 
 					strength="200"
-					partID="Bip01 Head"
+					partID="head"
 					/>					
 			</ImpulseSet>
 			

@@ -30,8 +30,8 @@ Human_x =
 		{
             BONE_BIP01 = "Root",
 			BONE_SPINE = "spine.01",
-			BONE_SPINE2 = "spine.02",
-			BONE_SPINE3 = "spine_chest",
+			BONE_SPINE2 = "spine_chest",
+			BONE_SPINE3 = "neck",
 			BONE_HEAD = "head",
 			BONE_WEAPON = "Weapon.R",
 			BONE_WEAPON2 = "Weapon.L",

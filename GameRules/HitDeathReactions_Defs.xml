@@ -48,7 +48,7 @@
  		<Enum>
 			<!-- sg1_preset.chr, shotgunner_red.cdf physic bones -->
 			<Value>head</Value>
-			<Value>spine.02</Value>
+			<Value>spine_chest</Value>
 			<Value>spine.01</Value>
 			<Value>hips</Value>
 			<Value>upper_arm.L</Value>

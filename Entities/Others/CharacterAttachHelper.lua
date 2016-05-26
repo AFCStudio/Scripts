@@ -4,7 +4,7 @@ CharacterAttachHelper = {
 	},
 	Properties =
 	{
-		BoneName = "Bip01 Head",
+		BoneName = "head",
 	},
 }
 
