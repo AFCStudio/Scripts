@@ -18,8 +18,6 @@ AFCObject = {
     fSumTime = 0,                   -- AFC Code: Variable
     vDir = { x=0, y=0, z=0, },
     
-    nCaptureType = 2,
-    
     PhysicTable = {
         mass = 1,
         gravity = 9.8,
