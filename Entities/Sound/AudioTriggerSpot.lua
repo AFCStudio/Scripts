@@ -12,14 +12,19 @@ AudioTriggerSpot = {
 		audioTriggerStopTriggerName = "",
 		bSerializePlayState = true, -- Determines if execution after de-serialization is needed.
 		bTriggerAreasOnMove = false, -- Triggers area events or not. (i.e. dynamic environment updates on move)
-		eiSoundObstructionType = 1, -- Clamped between 1 and 3. 1=Ignore, 2=SingleRay, 3=MultiRay
-		bPlayOnX = false,
-		bPlayOnY = false,
-		bPlayOnZ = false,
-		fRadiusRandom = 10.0,
-		bPlayRandom = false,
-		fMinDelay = 1,
-		fMaxDelay = 2,
+		eiSoundObstructionType = 1, -- Clamped between 1 and 5. 1=ignore, 2=adaptive, 3=low, 4=medium, 5=high
+			
+		PlayMode = {
+			eiBehaviour = 0, -- 0=Single, 1=Delay, 2=TriggerRate
+			fMinDelay = 1,
+			fMaxDelay = 2,
+			vectorRandomizationArea = {x=0.0, y=0.0, z=0.0},
+		},
+		
+		Debug = {
+			eiDrawActivityRadius = 0,
+			bDrawRandomizationArea = false,
+		}
 	},
 	
 	hOnTriggerID = nil,
@@ -27,6 +32,7 @@ AudioTriggerSpot = {
 	hCurrentOnTriggerID = nil,
 	hCurrentOffTriggerID = nil, -- only used in OnPropertyChange()
 	tObstructionType = {},
+	currentBehaviour = 0,
 	
 	bIsHidden = false,
 	bIsPlaying = false,
@@ -58,22 +64,10 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioTriggerSpot:_GenerateOffset()
-	local offset = {x=0,y=0,z=0}
-	local len = 0
-	
-	if (self.Properties.bPlayOnX) then
-		offset.x=randomF(-1,1);
-	end
-	if (self.Properties.bPlayOnY) then
-		offset.y=randomF(-1,1);
-	end
-	if (self.Properties.bPlayOnZ) then
-		offset.z=randomF(-1,1);
-	end
-	
-	NormalizeVector(offset);
-	ScaleVectorInPlace(offset, randomF(0,self.Properties.fRadiusRandom));
-	
+	local offset = {x=0, y=0, z=0};
+	offset.x = randomF(-self.Properties.PlayMode.vectorRandomizationArea.x/2.0, self.Properties.PlayMode.vectorRandomizationArea.x/2.0);
+	offset.y = randomF(-self.Properties.PlayMode.vectorRandomizationArea.y/2.0, self.Properties.PlayMode.vectorRandomizationArea.y/2.0);
+	offset.z = randomF(-self.Properties.PlayMode.vectorRandomizationArea.z/2.0, self.Properties.PlayMode.vectorRandomizationArea.z/2.0);
 	return offset;
 end
 
@@ -87,6 +81,10 @@ function AudioTriggerSpot:OnSpawn()
 	else
 		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
 		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
+	
+	if (System.IsEditor()) then
+		self:Activate(1);
 	end
 end
 
@@ -124,8 +122,18 @@ end
 function AudioTriggerSpot:OnPropertyChange()	
 	if (self.Properties.eiSoundObstructionType < 1) then
 		self.Properties.eiSoundObstructionType = 1;
-	elseif (self.Properties.eiSoundObstructionType > 3) then
-		self.Properties.eiSoundObstructionType = 3;
+	elseif (self.Properties.eiSoundObstructionType > 5) then
+		self.Properties.eiSoundObstructionType = 5;
+	end
+	
+	if(self.Properties.PlayMode.vectorRandomizationArea.x < 0.0) then
+		self.Properties.PlayMode.vectorRandomizationArea.x = 0.0;
+	end
+	if(self.Properties.PlayMode.vectorRandomizationArea.y < 0.0) then
+		self.Properties.PlayMode.vectorRandomizationArea.y = 0.0;
+	end
+	if(self.Properties.PlayMode.vectorRandomizationArea.z < 0.0) then
+		self.Properties.PlayMode.vectorRandomizationArea.z = 0.0;
 	end
 	
 	self:_LookupTriggerIDs();
@@ -149,10 +157,23 @@ function AudioTriggerSpot:OnPropertyChange()
 		self.bHasMoved = false;
 		self:KillTimer(0);		
 	end
-	
-	if (not self.bIsPlaying) then
-		-- Try to play, if disabled, hidden or invalid on-trigger Play() will fail!
-		self:Play();
+		
+	if (self.currentBehaviour ~= self.Properties.PlayMode.eiBehaviour) then
+		self:Stop();
+		self:KillTimer(0);
+		
+		if (self.Properties.PlayMode.eiBehaviour == 0) then
+			self:Play();
+		else
+			self:SetTimer(0, 1000 * randomF(self.Properties.PlayMode.fMinDelay, self.Properties.PlayMode.fMaxDelay));
+		end
+
+		self.currentBehaviour = self.Properties.PlayMode.eiBehaviour;
+	else
+		if (not self.bIsPlaying) then
+			-- Try to play, if disabled, hidden or invalid on-trigger Play() will fail!
+			self:Play();
+		end
 	end
 		
 	if (not self.Properties.bEnabled and ((self.bOriginalEnabled) or (self.hCurrentOffTriggerID ~= self.hOffTriggerID))) then
@@ -212,6 +233,9 @@ AudioTriggerSpot["Client"] = {
 	OnSoundDone = function(self, hTriggerID)
 		if (self.hOnTriggerID == hTriggerID) then
 			self:ActivateOutput( "Done",true );
+			if (self.Properties.PlayMode.eiBehaviour == 1) then
+				self:SetTimer(0, 1000 * randomF(self.Properties.PlayMode.fMinDelay, self.Properties.PlayMode.fMaxDelay));
+			end
 		end
 	end,
 	
@@ -238,6 +262,41 @@ AudioTriggerSpot["Client"] = {
 	OnMove = function(self)
 		self.bHasMoved = true;
 	end,
+	
+	----------------------------------------------------------------------------------------
+	OnUpdate = function(self)
+		local pos = self:GetWorldPos();
+		
+		if (System.IsEditor() and (not self.bIsHidden)) then
+		
+			if (self.Properties.Debug.bDrawRandomizationArea) then
+				local area = self.Properties.PlayMode.vectorRandomizationArea;
+				local rot = self:GetWorldAngles();
+				System.DrawOBB(pos.x, pos.y, pos.z, area.x, area.y, area.z, rot.x, rot.y, rot.z);
+			end
+			
+			if(self.Properties.Debug.eiDrawActivityRadius > 0) then
+				if ((self.hOnTriggerID ~= nil) and (self.Properties.Debug.eiDrawActivityRadius == 1))then
+					local radius = Sound.GetAudioTriggerRadius(self.hOnTriggerID);
+					System.DrawSphere(pos.x, pos.y, pos.z, radius, 250, 100, 100, 100);
+						
+					local fadeOutDistance = Sound.GetAudioTriggerOcclusionFadeOutDistance(self.hOnTriggerID);
+					if(fadeOutDistance > 0.0) then
+						System.DrawSphere(pos.x, pos.y, pos.z, radius - fadeOutDistance, 200, 200, 255, 100);
+					end
+				end
+				if ((self.hOffTriggerID ~= nil) and (self.Properties.Debug.eiDrawActivityRadius == 2))then
+					local radius = Sound.GetAudioTriggerRadius(self.hOffTriggerID);
+					System.DrawSphere(pos.x, pos.y, pos.z, radius, 250, 100, 100, 100);
+						
+					local fadeOutDistance = Sound.GetAudioTriggerOcclusionFadeOutDistance(self.hOffTriggerID);
+					if(fadeOutDistance > 0.0) then
+						System.DrawSphere(pos.x, pos.y, pos.z, radius - fadeOutDistance, 200, 200, 255, 100);
+					end
+				end
+			end
+		end
+	end,
 }
 
 ----------------------------------------------------------------------------------------
@@ -256,8 +315,8 @@ function AudioTriggerSpot:Play()
 		self.bHasMoved = false;
 		self.hCurrentOnTriggerID = self.hOnTriggerID;
 		
-		if (self.Properties.bPlayRandom) then
-			self:SetTimer(0, 1000 * randomF(self.Properties.fMinDelay, self.Properties.fMaxDelay));
+		if (self.Properties.PlayMode.eiBehaviour == 2) then
+			self:SetTimer(0, 1000 * randomF(self.Properties.PlayMode.fMinDelay, self.Properties.PlayMode.fMaxDelay));
 		end
 	end
 end

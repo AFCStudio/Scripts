@@ -16,7 +16,7 @@ AudioAreaRandom = {
 		audioTriggerPlayTrigger = "",
 		audioTriggerStopTrigger = "",
 		audioRTPCRtpc = "",
-		eiSoundObstructionType = 1, -- Clamped between 1 and 3. 1=Ignore, 2=SingleRay, 3=MultiRay
+		eiSoundObstructionType = 1, -- Clamped between 1 and 5. 1=ignore, 2=adaptive, 3=low, 4=medium, 5=high
 		fRtpcDistance = 5.0,
 		fRadiusRandom = 10.0,
 		fMinDelay = 1,
@@ -117,8 +117,8 @@ end
 function AudioAreaRandom:OnPropertyChange()
 	if (self.Properties.eiSoundObstructionType < 1) then
 		self.Properties.eiSoundObstructionType = 1;
-	elseif (self.Properties.eiSoundObstructionType > 3) then
-		self.Properties.eiSoundObstructionType = 3;
+	elseif (self.Properties.eiSoundObstructionType > 5) then
+		self.Properties.eiSoundObstructionType = 5;
 	end
 	
 	self:_LookupControlIDs();
@@ -228,21 +228,19 @@ function AudioAreaRandom:CliSrv_OnInit()
 end
 
 ----------------------------------------------------------------------------------------
-function AudioAreaRandom:UpdateFadeValue(player, fFade, fDistSq)
-	if (not(self.Properties.bEnabled) or (fFade == 0.0 and fDistSq == 0.0)) then
+function AudioAreaRandom:UpdateFadeValue(player, distance)
+	if (not(self.Properties.bEnabled)) then
 		self.fFadeValue = 0.0;
 		self:_UpdateRtpc();
 		do return end;
 	end
 	
 	if (self.Properties.fRtpcDistance > 0.0) then
-		if (self.nState == 2) then
-			if (self.fFadeValue ~= fFade) then
-				self.fFadeValue = fFade;
-				self:_UpdateRtpc();
-			end
-		else
-			self.fFadeValue = fFade;
+		local fade = (self.Properties.fRtpcDistance - distance) / self.Properties.fRtpcDistance;
+		fade = (fade > 0.0) and fade or 0.0;
+		
+		if (math.abs(self.fFadeValue - fade) > AudioUtils.areaFadeEpsilon) then
+			self.fFadeValue = fade;
 			self:_UpdateRtpc();
 		end
 	end
@@ -289,23 +287,35 @@ AudioAreaRandom.Client={
 	end,
 	
 	----------------------------------------------------------------------------------------
-	OnAudioListenerEnterNearArea = function(self, player, nAreaID, fFade)		
+	OnAudioListenerEnterNearArea = function(self, player, areaId, distance)		
 		if (self.nState == 0) then
 			self.nState = 1;
-			self:Play();
-			self.fFadeValue = 0.0;
-			self:_UpdateRtpc();
+			
+			if (distance < self.Properties.fRtpcDistance) then
+				self:Play();
+				self.fFadeValue = 0.0;
+				self:_UpdateRtpc();
+			end
 		end
 	end,
 	
 	----------------------------------------------------------------------------------------
-	OnAudioListenerMoveNearArea = function(self, player, areaId, fFade, fDistsq)
+	OnAudioListenerMoveNearArea = function(self, player, areaId, distance)
 		self.nState = 1;
-		self:UpdateFadeValue(player, fFade, fDistsq);
+		
+		if ((not self.bIsPlaying) and distance < self.Properties.fRtpcDistance) then
+			self:Play();
+			self:UpdateFadeValue(player, distance);
+		elseif ((self.bIsPlaying) and distance > self.Properties.fRtpcDistance) then
+			self:Stop();
+			self:UpdateFadeValue(player, distance);
+		elseif (distance < self.Properties.fRtpcDistance) then
+			self:UpdateFadeValue(player, distance);
+		end
 	end,
 	
 	----------------------------------------------------------------------------------------
-	OnAudioListenerEnterArea = function(self, player, areaId, fFade)
+	OnAudioListenerEnterArea = function(self, player)
 		if (self.nState == 0) then
 			-- possible if the listener is teleported or gets spawned inside the area
 			-- technically, the listener enters the Near Area and the Inside Area at the same time
@@ -320,25 +330,33 @@ AudioAreaRandom.Client={
 	end,
 	
 	----------------------------------------------------------------------------------------
-	OnAudioListenerProceedFadeArea = function(self, player, areaId, fExternalFade)
-		-- fExternalFade holds the fade value which was calculated by an inner, higher priority area
-		-- in the AreaManager to fade out the outer sound dependent on the largest fade distance of all attached entities
-		if (fExternalFade > 0.0) then
-			self.nState = 2;
-			self:UpdateFadeValue(player, fExternalFade, 0.0);
-		else
-			self:UpdateFadeValue(player, 0.0, 0.0);
+	OnAudioListenerProceedFadeArea = function(self, player, fade)
+		-- normalized fade value depending on the "InnerFadeDistance" set to an inner, higher priority area
+		self.nState = 2;
+		
+		if ((math.abs(self.fFadeValue - fade) > AudioUtils.areaFadeEpsilon) or ((fade == 0.0) and (self.fFadeValue ~= fade))) then
+			self.fFadeValue = fade;
+			self:_UpdateRtpc();
+			
+			if ((not self.bIsPlaying) and (fade > 0.0)) then
+				self:Play();
+			elseif ((self.bIsPlaying) and (fade == 0.0)) then
+				self:Stop();
+			end
 		end
 	end,
 	
 	----------------------------------------------------------------------------------------
-	OnAudioListenerLeaveArea = function(self, player, nAreaID, fFade)
+	OnAudioListenerLeaveArea = function(self, player, areaId, fade)
 		self.nState = 1;
 	end,
 	
 	----------------------------------------------------------------------------------------	
-	OnAudioListenerLeaveNearArea = function(self, player, nAreaID, fFade)
-		self:Stop();
+	OnAudioListenerLeaveNearArea = function(self, player, areaId, fade)
+		if (self.bIsPlaying) then
+			self:Stop();
+		end
+		
 		self.nState = 0;
 		self.fFadeValue = 0.0;
 		self:_UpdateRtpc();
