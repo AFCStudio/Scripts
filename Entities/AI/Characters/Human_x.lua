@@ -8,8 +8,10 @@ Human_x =
 	--ActionController = "Animations/Mannequin/ADB/humanControllerDefs.xml",
 	--AnimDatabase3P = "Animations/Mannequin/ADB/human.adb",
     
-    ActionController = "Animations/Mannequin/ADB/AIControllerDefs.xml",
-	AnimDatabase3P = "Animations/Mannequin/ADB/AIDataBase.adb",
+    --ActionController = "Animations/Mannequin/ADB/AIControllerDefs.xml",
+	--AnimDatabase3P = "Animations/Mannequin/ADB/AIDataBase.adb",
+    ActionController = "Animations/Mannequin/ADB/MagicianControllerDefs.xml",
+	AnimDatabase3P = "Animations/Mannequin/ADB/MagicianDataBase.adb",
 	SoundDatabase = "Animations/Mannequin/ADB/humanSounds.adb",
 
 	UseMannequinAGState = true,
