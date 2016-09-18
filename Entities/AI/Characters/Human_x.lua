@@ -11,15 +11,6 @@ Human_x =
     ActionController = "Animations/Mannequin/ADB/AIControllerDefs.xml",
 	AnimDatabase3P = "Animations/Mannequin/ADB/AIDataBase.adb",
 	SoundDatabase = "Animations/Mannequin/ADB/humanSounds.adb",
-    
-    -- AFC Variables -----------------
-    nCaptureType = 1,
-    bIsRunning = 0,
-    fSumTime = 0,                   
-    vDir = { x=0, y=0, z=0, },
-    luaActive = 0,
-    fRyseTime = 1.833,
-    -- End -----------------------------
 
 	UseMannequinAGState = true,
 	UseLegacyCoverLocator = false,
@@ -233,6 +224,7 @@ Human_x =
         bIsMagician = false,        -- AFC Tech
         bActive = 0,
         fRyseTime = 1.833,
+        nCaptureType = 0,
 
 		soclasses_SmartObjectClass = "Human, Actor",
 
