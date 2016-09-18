@@ -688,7 +688,7 @@
 			</Table>
 
 			<?class Weapons ?>
-			<Table name="Weapons" optional="1" desc="">
+			<Table name="Weapons" id="idActionWeapon" optional="1" desc="">
 				<Property name="respawnTime"             type="float"  optional="1" default="" desc=""/>
 				<Property name="isSecondary"             type="bool"   optional="1" default="" desc=""/>
 				<Property name="mounted"                 type="bool"   optional="1" default="" desc=""/>
@@ -708,7 +708,7 @@
 					<Array name="Helpers" elementName="Helper" optional="1" desc="">
 						<Property name="value"           type="string" optional="1" default="" desc="Helper name"/>
 					</Array>
-					<Array name="Actions" elementName="Helper" optional="1" desc="">
+					<Array name="Actions" elementName="Action" optional="1" desc="">
 						<Property name="name"            type="string" optional="1" default="" desc=""/>
 						<Array name="Animations" elementName="Animation" optional="1" desc="">
 							<Property name="name"        type="string" optional="1" default="" desc=""/>

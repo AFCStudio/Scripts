@@ -11,6 +11,7 @@ AudioAreaEntity = {
 	
 	Properties = {
 		bEnabled = true,
+		bTriggerAreasOnMove = false, -- Triggers area events or not. (i.e. dynamic environment updates on move)
 		audioEnvironmentEnvironment = "",
 		eiSoundObstructionType = 1, -- Clamped between 1 and 3. 1=Ignore, 2=SingleRay, 3=MultiRay
 		fFadeDistance = 5.0,
@@ -75,6 +76,14 @@ end
 ----------------------------------------------------------------------------------------
 function AudioAreaEntity:OnSpawn()
 	self:SetFlags(ENTITY_FLAG_CLIENT_ONLY, 0);
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -98,12 +107,20 @@ end
 
 ----------------------------------------------------------------------------------------
 function AudioAreaEntity:OnPropertyChange()
-	self:_UpdateParameters();
-	
 	if (self.Properties.eiSoundObstructionType < 1) then
 		self.Properties.eiSoundObstructionType = 1;
 	elseif (self.Properties.eiSoundObstructionType > 3) then
 		self.Properties.eiSoundObstructionType = 3;
+	end
+	
+	self:_UpdateParameters();
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
 	end
 	
 	if (self.nState == 1) then -- near

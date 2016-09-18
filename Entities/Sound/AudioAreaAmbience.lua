@@ -11,6 +11,7 @@ AudioAreaAmbience = {
 	
 	Properties = {
 		bEnabled = true,
+		bTriggerAreasOnMove = false, -- Triggers area events or not. (i.e. dynamic environment updates on move)
 		audioTriggerPlayTrigger = "",
 		audioTriggerStopTrigger = "",
 		audioRTPCRtpc = "",
@@ -99,6 +100,14 @@ end
 ----------------------------------------------------------------------------------------
 function AudioAreaAmbience:OnSpawn()
 	self:SetFlags(ENTITY_FLAG_CLIENT_ONLY, 0);
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -134,6 +143,14 @@ function AudioAreaAmbience:OnPropertyChange()
 	self:SetCurrentAudioEnvironments();
 	self:SetAudioProxyOffset(g_Vectors.v000, self:GetDefaultAuxAudioProxyID());
   
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
+	
 	if (self.nState == 1) then -- near
 		self:_SetObstruction();
 	elseif (self.nState == 2) then -- inside

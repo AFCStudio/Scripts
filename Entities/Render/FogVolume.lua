@@ -28,6 +28,8 @@ FogVolume =
 		DensityNoiseFrequency = { x = 10, y = 10, z = 10 }, --[1,1000,0.1,"Controls the spatial frequency of the noise for the density."]
 		bIgnoresVisAreas = 0, --[0,1,0,"Controls whether this entity should respond to visareas."]
 		bAffectsThisAreaOnly = 0, --[0,1,0,"Set this parameter to false to make this entity affect in multiple visareas."]
+		color_EmissionColor = { x = 1, y = 1, z = 1 }, --[0,1,0.0,"Specifies the color to be multiplied by EmissionIntensity."]
+		EmissionIntensity = 0.0,  --[0.0,10.0,0.001,"Specifies how much luminance (kcd/m2) the fog emits."]
 	},
 
 	Editor = 

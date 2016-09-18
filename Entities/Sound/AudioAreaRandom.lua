@@ -11,6 +11,7 @@ AudioAreaRandom = {
 	
 	Properties = {
 		bEnabled = true,
+		bTriggerAreasOnMove = false, -- Triggers area events or not. (i.e. dynamic environment updates on move)
 		bMoveWithEntity = false,
 		audioTriggerPlayTrigger = "",
 		audioTriggerStopTrigger = "",
@@ -84,6 +85,14 @@ end
 ----------------------------------------------------------------------------------------
 function AudioAreaRandom:OnSpawn()
 	self:SetFlags(ENTITY_FLAG_CLIENT_ONLY, 0);
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
 end
 
 ----------------------------------------------------------------------------------------
@@ -118,6 +127,14 @@ function AudioAreaRandom:OnPropertyChange()
 	self:SetCurrentAudioEnvironments();
 	self:SetAudioProxyOffset(g_Vectors.v000, self:GetDefaultAuxAudioProxyID());
 	self:AuxAudioProxiesMoveWithEntity(self.Properties.bMoveWithEntity);
+	
+	if (self.Properties.bTriggerAreasOnMove) then
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 0);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 0);
+	else
+		self:SetFlags(ENTITY_FLAG_TRIGGER_AREAS, 2);
+		self:SetFlagsExtended(ENTITY_FLAG_EXTENDED_NEEDS_MOVEINSIDE, 2);
+	end
 	
 	if ((self.bIsPlaying) and (self.hCurrentOnTriggerID ~= self.hOnTriggerID)) then
 		-- Stop a possibly playing instance if the on-trigger changed!
