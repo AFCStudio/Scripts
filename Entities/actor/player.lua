@@ -15,6 +15,8 @@ Player =
 
 	Properties =
 	{
+        nCaptureType = 0,
+    
 		-- AI-related properties
 		soclasses_SmartObjectClass = "Player",
 		groupid = 0,
