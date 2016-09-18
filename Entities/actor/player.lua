@@ -51,9 +51,9 @@ Player =
 		--fileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
 		--shadowFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
 		--clientFileModel = "Objects/Characters/Human/sdk_player/sdk_player.cdf",
-        fileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
-        shadowFileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
-        clientFileModel = "Objects/Characters/AFC_Ottomans/Magician.cdf",
+        fileModel = "Objects/Characters/TheMagician/TheMagician.cdf",
+        shadowFileModel = "Objects/Characters/TheMagician/TheMagician.cdf",
+        clientFileModel = "Objects/Characters/TheMagician/TheMagician.cdf",
 
 		fileHitDeathReactionsParamsDataFile = "Libs/HitDeathReactionsData/HitDeathReactions_MP.xml",
 	},
