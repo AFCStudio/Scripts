@@ -7,6 +7,7 @@ CloudBlocker =
 		fDecayInfluence = 1.0, --[0,1,0.01,"Specifies the influence of fog density decay."]
 		DecayEnd = 0.0, --[0,100000,1.0,"Specifies the end distance of fog density decay in world units (m)."]
 		DecayStart = 0.0, --[0,100000,1.0,"Specifies the start distance of cloud density decay in world units (m)."]
+		bScreenSpace = 0, --[0,1,1,"If true, cloud blocker is projected on screen space."]
 	},
 
 	Editor = 
@@ -16,7 +17,7 @@ CloudBlocker =
 		ShowBounds = 1,
 	},
 
-	_CloudBlocker = { position={x=0,y=0,z=0},decayStart=0,decayEnd=0,decayInfluence },
+	_CloudBlocker = { position={x=0,y=0,z=0},decayStart=0,decayEnd=0,decayInfluence=1,screenSpace=0 },
 }
 
 -------------------------------------------------------
@@ -76,6 +77,7 @@ function CloudBlocker:OnUpdate( dt )
 		self._CloudBlocker.decayStart = self.Properties.DecayStart;
 		self._CloudBlocker.decayEnd = self.Properties.DecayEnd;
 		self._CloudBlocker.decayInfluence = self.Properties.fDecayInfluence;
+		self._CloudBlocker.screenSpace = self.Properties.bScreenSpace;
 		System.PushCloudBlocker( self._CloudBlocker );
 	end
 end
