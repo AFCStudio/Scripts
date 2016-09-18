@@ -1,6 +1,7 @@
 <HitTypes>
 	<!-- This file is loaded as a non-native fallback to CGameRulesCommonDamageHandling::Init -->
 	<!-- Also add these to Animations/Mannequin/ADB/hitDeathTags.xml -->
+    <hit_type name="MagicBall" flags="SinglePlayerOnly"/>
 	<hit_type name="repair" flags="SinglePlayerOnly"/>
 	<hit_type name="event" flags="SinglePlayerOnly"/>
 	<hit_type name="impulse_hit" flags="SinglePlayerOnly"/>
